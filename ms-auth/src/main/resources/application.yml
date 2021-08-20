@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    ROOT: INFO
+    az.kapitalbank.tg: DEBUG
+
+spring:
+  application:
+    name: ms-auth
+
+application:
+  swagger:
+    base-package: "az.company.auth.controller"
+    paths: "/.*"
+    apiInfo:
+      version: 1.0
+      title: "Starter Project Rest API"
+      description: "Spring Boot REST API for Starter Project"
+
+
+
