@@ -1,7 +1,6 @@
 package az.company.card.controller;
 
 import az.company.card.dto.CardOrderDto;
-import az.company.card.model.request.CreateCardOrderRequest;
 import az.company.card.service.CardOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,32 +24,32 @@ public class CardOrderController {
     private final CardOrderService cardOrderService;
 
     @GetMapping
-    public List<CardOrderDto> getCardOrders(){
+    public List<CardOrderDto> getCardOrders() {
         return cardOrderService.getCardOrders();
     }
 
     @GetMapping("/{id}")
-    public void getCardOrder(@PathVariable Long id){
+    public void getCardOrder(@PathVariable Long id) {
         cardOrderService.getCardOrder(id);
     }
 
     @PostMapping("/create")
-    public void createCardOrder(@RequestBody CardOrderDto cardOrderDto){
+    public void createCardOrder(@RequestBody CardOrderDto cardOrderDto) {
         cardOrderService.createCardOrder(cardOrderDto);
     }
 
     @PutMapping("/edit")
-    public void editCardOrder(@RequestBody CreateCardOrderRequest cardOrderRequest){
-        cardOrderService.editCardOrder(cardOrderRequest);
+    public CardOrderDto editCardOrder(@RequestBody CardOrderDto cardOrderDto) {
+        return cardOrderService.editCardOrder(cardOrderDto);
     }
 
     @PutMapping("/{id}/delete")
-    public void deleteCardOrder(@PathVariable Long id){
-        cardOrderService.deleteCardOrder(id);
+    public CardOrderDto deleteCardOrder(@PathVariable Long id) {
+        return cardOrderService.deleteCardOrder(id);
     }
 
     @PutMapping("/{id}/submit")
-    public void submitCardOrder(@PathVariable Long id){
+    public void submitCardOrder(@PathVariable Long id) {
         cardOrderService.submitCardOrder(id);
     }
 

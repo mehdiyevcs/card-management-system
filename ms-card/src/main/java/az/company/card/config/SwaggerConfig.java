@@ -36,17 +36,17 @@ public class SwaggerConfig {
         watch.start();
 
         //Predicate<RequestHandler> selector = StringUtils.isNotBlank(properties.getBasePackage()) ?
-                //     RequestHandlerSelectors.basePackage(properties.getBasePackage()) : RequestHandlerSelectors.any(); //???
+        //     RequestHandlerSelectors.basePackage(properties.getBasePackage()) : RequestHandlerSelectors.any(); //???
 
-                Docket docket = new Docket(DocumentationType.SWAGGER_2)
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))
                 .paths(regex(properties.getPaths()))
                 .build()
                 .apiInfo(SwaggerUtil.convertToSpringFoxApiInfo(properties.getApiInfo()))
                 .forCodeGeneration(true);
-                //.securityContexts(Collections.singletonList(securityContext()))
-                //.securitySchemes(Collections.singletonList(apiKey()));
+        //.securityContexts(Collections.singletonList(securityContext()))
+        //.securitySchemes(Collections.singletonList(apiKey()));
 
         watch.stop();
         log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class IndexController {
     @GetMapping("/ping")
-    public String ping(){
+    public String ping() {
         return "Hello, i am ms-card";
     }
 }

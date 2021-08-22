@@ -10,6 +10,6 @@ import java.util.List;
  * @author MehdiyevCS on 22.08.21
  */
 @Repository
-public interface CardRepository extends JpaRepository<Card,Long> {
+public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findByCustomerId(Long customerId);
 }

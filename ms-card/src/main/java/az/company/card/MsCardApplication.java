@@ -26,16 +26,16 @@ public class MsCardApplication {
     }
 
     private static void logApplicationStartup(Environment env) {
-        String protocol = "http";
+        var protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {
             protocol = "https";
         }
         String serverPort = env.getProperty("local.server.port");
         String contextPath = env.getProperty("server.servlet.context-path");
         if (StringUtils.isBlank(contextPath)) {
-          //  contextPath = "/";
+            contextPath = "/";
         }
-        String hostAddress = "localhost";
+        var hostAddress = "localhost";
         try {
             hostAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
