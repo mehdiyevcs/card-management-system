@@ -9,6 +9,21 @@ logging:
 spring:
   application:
     name: ms-card
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cms_card_db
+    username: card_admin
+    password: admin123
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false  #look what is it
+    generate-ddl: true
+    naming: #look what is it
+      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
 application:
   swagger:
@@ -18,6 +33,13 @@ application:
       version: 1.0
       title: "Starter Project Rest API"
       description: "Spring Boot REST API for Starter Project"
+      termsOfServiceUrl:
+      license: "Apache License Version 2.0"
+      licenseUrl: "https://www.apache.org/licenses/LICENSE-2.0"
+      contact:
+        name: "Jalal Mehdiyev"
+        email: "djalal.mekhtiyev@gmail.com"
+        phone: "+994507991228"
 
 
 

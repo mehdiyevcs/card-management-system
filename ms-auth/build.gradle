@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-    id 'checkstyle'
+//id 'checkstyle'
     id 'org.sonarqube' version '3.0'
 }
 
@@ -42,8 +42,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
+/*
 checkstyle {
     toolVersion '8.23' // default version is 8.27 for gradle 6.6.1, but checkstyle.xml doesn't work with that version
 }
+
+ */
 
