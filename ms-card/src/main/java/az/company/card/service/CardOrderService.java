@@ -5,13 +5,9 @@ import az.company.card.domain.enumeration.OrderStatus;
 import az.company.card.dto.CardOrderDto;
 import az.company.card.dto.CardOrderOperationDto;
 import az.company.card.mapper.CardOrderMapper;
-import az.company.card.mapper.CardOrderOperationMapper;
-import az.company.card.repository.CardOrderOperationRepository;
 import az.company.card.repository.CardOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -29,8 +25,7 @@ public class CardOrderService {
 
     private final CardOrderRepository cardOrderRepository;
     private final CardOrderMapper cardOrderMapper;
-    private final CardOrderOperationRepository cardOrderOperationRepository;
-    private final CardOrderOperationMapper cardOrderOperationMapper;
+    private final CardOrderOperationService cardOrderOperationService;
 
     //UserId will be extracted from ContextHolder
     private final static Long USER_ID1 = 12345L;
@@ -42,18 +37,18 @@ public class CardOrderService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<CardOrderDto> getCardOrder(@PathVariable Long id) {
+    public Optional<CardOrderDto> getCardOrder(Long id) {
         return cardOrderRepository.findByIdAndUserId(id, USER_ID1).map(cardOrderMapper::toDto);
     }
 
-    public CardOrderDto createCardOrder(@RequestBody CardOrderDto cardOrderDto) {
+    public CardOrderDto createCardOrder(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
         cardOrder.setUserId(USER_ID1);
         cardOrder = cardOrderRepository.save(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
     }
 
-    public CardOrderDto editCardOrder(@RequestBody CardOrderDto cardOrderDto) {
+    public CardOrderDto editCardOrder(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderRepository.findById(cardOrderDto.getId())
                 .orElseThrow(() -> new RuntimeException("Not Found"));
 
@@ -63,18 +58,18 @@ public class CardOrderService {
         }
 
         //Log the operation being carried out
-        CardOrderOperationDto cardOrderOperationDto = createOperation(cardOrder.getId(),
+        var cardOrderOperationDto = createOperation(cardOrder.getId(),
                 CardOrderOperationType.EDITION,
                 cardOrder.getStatus(),
                 OrderStatus.EDITED);
-        cardOrderOperationRepository.save(cardOrderOperationMapper.toEntity(cardOrderOperationDto));
+        cardOrderOperationService.save(cardOrderOperationDto);
 
-        cardOrder.setStatus(OrderStatus.EDITED);
-        cardOrder = cardOrderRepository.save(cardOrder);
+        cardOrderDto.setStatus(OrderStatus.EDITED);
+        cardOrder = cardOrderRepository.save(cardOrderMapper.toEntity(cardOrderDto));
         return cardOrderMapper.toDto(cardOrder);
     }
 
-    public CardOrderDto deleteCardOrder(@PathVariable Long id) {
+    public CardOrderDto deleteCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
 
@@ -83,11 +78,11 @@ public class CardOrderService {
             throw new RuntimeException("Order can not be deleted");
         }
         //Log the operation being carried out
-        CardOrderOperationDto cardOrderOperationDto = createOperation(cardOrder.getId(),
+        var cardOrderOperationDto = createOperation(cardOrder.getId(),
                 CardOrderOperationType.DELETION,
                 cardOrder.getStatus(),
                 OrderStatus.DELETED);
-        cardOrderOperationRepository.save(cardOrderOperationMapper.toEntity(cardOrderOperationDto));
+        cardOrderOperationService.save(cardOrderOperationDto);
 
         //Delete from the main table
         cardOrder.setStatus(OrderStatus.DELETED);
@@ -95,7 +90,7 @@ public class CardOrderService {
         return cardOrderMapper.toDto(cardOrder);
     }
 
-    public CardOrderDto submitCardOrder(@PathVariable Long id) {
+    public CardOrderDto submitCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
 
@@ -105,11 +100,11 @@ public class CardOrderService {
         }
 
         //Log the operation being carried out
-        CardOrderOperationDto cardOrderOperationDto = createOperation(cardOrder.getId(),
+        var cardOrderOperationDto = createOperation(cardOrder.getId(),
                 CardOrderOperationType.SUBMISSION,
                 cardOrder.getStatus(),
                 OrderStatus.SUBMITTED);
-        cardOrderOperationRepository.save(cardOrderOperationMapper.toEntity(cardOrderOperationDto));
+        cardOrderOperationService.save(cardOrderOperationDto);
 
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);

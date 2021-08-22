@@ -1,6 +1,6 @@
 package az.company.card.domain;
 
-import az.company.card.domain.enumeration.OrderOperationType;
+import az.company.card.domain.enumeration.CardOrderOperationType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -30,7 +30,7 @@ public class CardOrderOperation {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_type", nullable = false)
-    private OrderOperationType orderOperationType;
+    private CardOrderOperationType orderOperationType;
 
     @NotNull
     @Column(name = "description", nullable = false)

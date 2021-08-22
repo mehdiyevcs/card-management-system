@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author MehdiyevCS on 22.08.21
@@ -29,13 +30,13 @@ public class CardOrderController {
     }
 
     @GetMapping("/{id}")
-    public void getCardOrder(@PathVariable Long id) {
-        cardOrderService.getCardOrder(id);
+    public Optional<CardOrderDto> getCardOrder(@PathVariable Long id) {
+        return cardOrderService.getCardOrder(id);
     }
 
     @PostMapping("/create")
-    public void createCardOrder(@RequestBody CardOrderDto cardOrderDto) {
-        cardOrderService.createCardOrder(cardOrderDto);
+    public CardOrderDto createCardOrder(@RequestBody CardOrderDto cardOrderDto) {
+        return cardOrderService.createCardOrder(cardOrderDto);
     }
 
     @PutMapping("/edit")
@@ -49,8 +50,8 @@ public class CardOrderController {
     }
 
     @PutMapping("/{id}/submit")
-    public void submitCardOrder(@PathVariable Long id) {
-        cardOrderService.submitCardOrder(id);
+    public CardOrderDto submitCardOrder(@PathVariable Long id) {
+        return cardOrderService.submitCardOrder(id);
     }
 
 }
