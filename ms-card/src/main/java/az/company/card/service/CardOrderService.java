@@ -4,6 +4,9 @@ import az.company.card.domain.enumeration.CardOrderOperationType;
 import az.company.card.domain.enumeration.OrderStatus;
 import az.company.card.dto.CardOrderDto;
 import az.company.card.dto.CardOrderOperationDto;
+import az.company.card.error.exception.InvalidInputException;
+import az.company.card.error.exception.NotFoundException;
+import az.company.card.error.validation.ValidationMessage;
 import az.company.card.mapper.CardOrderMapper;
 import az.company.card.repository.CardOrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,11 +53,11 @@ public class CardOrderService {
 
     public CardOrderDto editCardOrder(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderRepository.findById(cardOrderDto.getId())
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
 
         //Submitted order can not be canged
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw new RuntimeException("Order can not be edited");
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
         }
 
         //Log the operation being carried out
@@ -71,11 +74,11 @@ public class CardOrderService {
 
     public CardOrderDto deleteCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
 
         //Submitted order can not be canged
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw new RuntimeException("Order can not be deleted");
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
         }
         //Log the operation being carried out
         var cardOrderOperationDto = createOperation(cardOrder.getId(),
@@ -92,11 +95,11 @@ public class CardOrderService {
 
     public CardOrderDto submitCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not Found"));
+                .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
 
         //Log the operation being carried out
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw new RuntimeException("Order is already submitted");
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
         }
 
         //Log the operation being carried out

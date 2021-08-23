@@ -35,9 +35,6 @@ public class SwaggerConfig {
         StopWatch watch = new StopWatch();
         watch.start();
 
-        //Predicate<RequestHandler> selector = StringUtils.isNotBlank(properties.getBasePackage()) ?
-        //     RequestHandlerSelectors.basePackage(properties.getBasePackage()) : RequestHandlerSelectors.any(); //???
-
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))

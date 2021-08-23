@@ -2,6 +2,7 @@ package az.company.card.dto;
 
 import az.company.card.domain.enumeration.CardType;
 import az.company.card.domain.enumeration.OrderStatus;
+import az.company.card.error.validation.constraints.Pin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class CardOrderDto {
     private Integer period;
     private boolean urgent;
     private String codeWord;
+    @Pin
     private String cardHolderPin;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
