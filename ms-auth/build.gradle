@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
-//id 'checkstyle'
+    id 'checkstyle'
     id 'org.sonarqube' version '3.0'
 }
 
@@ -23,7 +23,8 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -34,18 +35,26 @@ dependencies {
 
     implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_version}"
     implementation "org.apache.commons:commons-lang3:${apache_commons_version}"
+    
+    implementation "org.postgresql:postgresql:42.1.1"
 
     implementation "io.springfox:springfox-swagger2:${springfox_version}"
     implementation "io.springfox:springfox-bean-validators:${springfox_version}"
+    implementation "io.springfox:springfox-swagger-ui:${springfox_version}"
+
+    compileOnly "javax.servlet:javax.servlet-api:${javax_servlet_version}"
+    implementation "javax.annotation:javax.annotation-api:${javax_annotation_version}"
+    implementation "javax.validation:validation-api:${javax_validation_version}"
+
+    implementation "io.jsonwebtoken:jjwt-api:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-impl:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jwt_version}"
 }
 
 test {
     useJUnitPlatform()
 }
-/*
+
 checkstyle {
     toolVersion '8.23' // default version is 8.27 for gradle 6.6.1, but checkstyle.xml doesn't work with that version
 }
-
- */
-
