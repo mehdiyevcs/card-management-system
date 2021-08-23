@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  db:
+  db_card:
     container_name: cms_card_db
     image: postgres
     environment:
@@ -10,4 +10,33 @@ services:
     ports:
       - "5432:5432"
     #volumes:
-
+  db_auth:
+    container_name: cms_auth_db
+    image: postgres
+    environment:
+      POSTGRES_USER: auth_admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: cms_auth_db
+    ports:
+      - "5433:5432"
+    #volumes:
+  db_customer:
+    container_name: cms_customer_db
+    image: postgres
+    environment:
+      POSTGRES_USER: customer_admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: cms_customer_db
+    ports:
+      - "5434:5432"
+    #volumes:
+  #db_account:
+  #  container_name: cms_account_db
+  #  image: postgres
+  #  environment:
+  #    POSTGRES_USER: account_admin
+  #    POSTGRES_PASSWORD: admin123
+  #    POSTGRES_DB: cms_account_db
+  #  ports:
+  #    - "5435:5432"
+    #volumes:
