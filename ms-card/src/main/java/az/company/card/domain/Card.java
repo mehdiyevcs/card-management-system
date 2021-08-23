@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -40,6 +42,10 @@ public class Card {
     @Column(name = "account_number", nullable = false)
     private String accountNumber;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @OneToOne
+    @JoinColumn(name = "card_order_id", nullable = false)
+    private CardOrder cardOrder;
 }

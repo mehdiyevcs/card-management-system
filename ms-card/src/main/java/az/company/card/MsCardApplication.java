@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 @EnableSwagger2
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})

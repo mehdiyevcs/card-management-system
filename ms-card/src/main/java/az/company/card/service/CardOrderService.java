@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CardOrderService {
 
+    //UserId will be extracted from ContextHolder
+    private static final Long USER_ID1 = 12345L;
+
     private final CardOrderRepository cardOrderRepository;
     private final CardOrderMapper cardOrderMapper;
     private final CardOrderOperationService cardOrderOperationService;
-
-    //UserId will be extracted from ContextHolder
-    private final static Long USER_ID1 = 12345L;
 
     public List<CardOrderDto> getCardOrders() {
         return cardOrderRepository.findAllByUserId(USER_ID1)

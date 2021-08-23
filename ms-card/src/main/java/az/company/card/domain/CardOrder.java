@@ -1,6 +1,5 @@
 package az.company.card.domain;
 
-
 import az.company.card.domain.enumeration.CardType;
 import az.company.card.domain.enumeration.OrderStatus;
 import lombok.Data;
@@ -56,15 +55,15 @@ public class CardOrder {
     @Column(name = "card_holder_pin", nullable = false)
     private String cardHolderPin;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 }
