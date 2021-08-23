@@ -9,7 +9,9 @@ import az.company.card.error.exception.NotFoundException;
 import az.company.card.error.validation.ValidationMessage;
 import az.company.card.mapper.CardOrderMapper;
 import az.company.card.repository.CardOrderRepository;
+import az.company.card.util.ConvertUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 /**
  * @author MehdiyevCS on 22.08.21
  */
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -45,6 +48,7 @@ public class CardOrderService {
     }
 
     public CardOrderDto createCardOrder(CardOrderDto cardOrderDto) {
+        log.debug("createCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
         cardOrder.setUserId(USER_ID1);
         cardOrder = cardOrderRepository.save(cardOrder);
@@ -54,7 +58,7 @@ public class CardOrderService {
     public CardOrderDto editCardOrder(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderRepository.findById(cardOrderDto.getId())
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
-
+        log.debug("EditCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         //Submitted order can not be canged
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
             throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
@@ -75,7 +79,7 @@ public class CardOrderService {
     public CardOrderDto deleteCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
-
+        log.debug("The cardOrder {} has been deleted", id);
         //Submitted order can not be canged
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
             throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
@@ -96,7 +100,7 @@ public class CardOrderService {
     public CardOrderDto submitCardOrder(Long id) {
         var cardOrder = cardOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
-
+        log.debug("The cardOrder {} has been submitted", id);
         //Log the operation being carried out
         if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
             throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
@@ -112,6 +116,7 @@ public class CardOrderService {
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);
 
+        log.info("Kafka event has been published");
         //Kafka Event publishing, need to be implemented
 
         return cardOrderMapper.toDto(cardOrder);
@@ -121,6 +126,8 @@ public class CardOrderService {
                                                   CardOrderOperationType operationType,
                                                   OrderStatus oldStatus,
                                                   OrderStatus newStatus) {
+        log.info("Status of the card order {} changed from {} to {}",
+                cardOrderId, oldStatus, newStatus);
         return CardOrderOperationDto.builder()
                 .cardOrder(cardOrderId)
                 .createdAt(LocalDateTime.now())
