@@ -21,7 +21,7 @@ public class MessageSourceConfig {
 
     @Bean
     public MessageSource messageSource() {
-        ResourceBundleMessageSource rs = new ResourceBundleMessageSource();
+        var rs = new ResourceBundleMessageSource();
         rs.setBasename("i18n/messages");
         rs.setDefaultEncoding("UTF-8");
         return rs;
@@ -29,7 +29,7 @@ public class MessageSourceConfig {
 
     @Bean
     public LocaleResolver localeResolver() {
-        AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+        var localeResolver = new AcceptHeaderLocaleResolver();
         localeResolver.setDefaultLocale(LOCALE_EN);
         localeResolver.setSupportedLocales(Arrays.asList(LOCALE_AZ, LOCALE_EN));
         return localeResolver;

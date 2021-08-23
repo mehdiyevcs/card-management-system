@@ -15,7 +15,7 @@ public class CommonUtil {
     private static final AtomicInteger counter = new AtomicInteger(100_000);
 
     public static String generateId() {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        var localDateTime = LocalDateTime.now();
         return localDateTime.format(formatter) + "C" + counter.getAndIncrement();
     }
 }

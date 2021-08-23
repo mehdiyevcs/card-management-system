@@ -24,7 +24,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -64,15 +63,15 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({CommonException.class})
     public ErrorResponse handleCommonException(CommonException ex) {
-        this.addErrorLog((Integer) ex.getCode(), ex.getMessage(), (Throwable) ex);
+        this.addErrorLog(ex.getCode(), ex.getMessage(), (Throwable) ex);
         return new ErrorResponse(this.webUtil.getRequestId(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public ErrorResponse handleAll(Exception ex) {
-        this.addErrorLog((HttpStatus) HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), (Throwable) ex);
-        String errMsg = "Unexpected internal server error occurs";
+        this.addErrorLog(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), (Throwable) ex);
+        var errMsg = "Unexpected internal server error occurs";
         return new ErrorResponse(this.webUtil.getRequestId(), HttpStatus.INTERNAL_SERVER_ERROR, errMsg);
     }
 
@@ -86,49 +85,51 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ConstraintViolationException.class})
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException ex) {
-        Optional<String> violations = (Optional) ex.getConstraintViolations().stream().map((v) -> {
-            Path var10000 = v.getPropertyPath();
+        Optional<String> violations = ex.getConstraintViolations().stream().map(v -> {
+            var var10000 = v.getPropertyPath();
             return var10000 + ": " + this.messageSourceUtil.getMessage(v.getMessage());
         }).collect(Collectors.collectingAndThen(Collectors.joining("; "), Optional::ofNullable));
-        String errMsg = (String) violations.orElse(ex.getMessage());
+        String errMsg = violations.orElse(ex.getMessage());
         this.addErrorLog(HttpStatus.BAD_REQUEST, errMsg, "ConstraintViolationException");
         return new ErrorResponse(this.webUtil.getRequestId(), HttpStatus.BAD_REQUEST, errMsg);
     }
 
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        Optional<String> errors = (Optional) ex.getBindingResult().getFieldErrors().stream().map((x) -> {
+        Optional<String> errors = ex.getBindingResult().getFieldErrors().stream().map(x -> {
             return String.format("'%s' %s", x.getField(), this.messageSourceUtil.getMessage(x.getDefaultMessage()));
         }).collect(Collectors.collectingAndThen(Collectors.joining("; "), Optional::ofNullable));
-        String errLogMessage = String.join(System.lineSeparator(),
+        var errLogMessage = String.join(System.lineSeparator(),
                 (CharSequence) errors.orElse(ex.getMessage()), "Request body: " + this.webUtil.getRequestBody());
         this.addErrorLog(status, errLogMessage, "MethodArgumentNotValidException");
-        ErrorResponse errorResponse = new ErrorResponse(this.webUtil.getRequestId(),
-                status, (String) errors.orElse(ex.getMessage()));
+        var errorResponse = new ErrorResponse(this.webUtil.getRequestId(),
+                status, errors.orElse(ex.getMessage()));
         return new ResponseEntity(errorResponse, headers, status);
     }
 
+    @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
                                                                           HttpHeaders headers,
                                                                           HttpStatus status,
                                                                           WebRequest request) {
         String error = ex.getParameterName() + " parameter is missing";
         this.addErrorLog(status, error, "MissingServletRequestParameterException");
-        ErrorResponse errorResponse = new ErrorResponse(this.webUtil.getRequestId(), status, error);
+        var errorResponse = new ErrorResponse(this.webUtil.getRequestId(), status, error);
         return new ResponseEntity(errorResponse, headers, status);
     }
 
+    @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        String errLogMessage = String.join(System.lineSeparator(),
+        var errLogMessage = String.join(System.lineSeparator(),
                 ex.getMessage(), "Request body: " + this.webUtil.getRequestBody());
-        String error = "Request not readable";
         this.addErrorLog(status, errLogMessage, "HttpMessageNotReadableException");
-        ErrorResponse errorResponse = new ErrorResponse(this.webUtil.getRequestId(), status, ex.getMessage());
+        var errorResponse = new ErrorResponse(this.webUtil.getRequestId(), status, ex.getMessage());
         return new ResponseEntity(errorResponse, headers, status);
     }
 
@@ -142,16 +143,13 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     protected void addErrorLog(Integer errorCode, String errorMessage, Throwable ex) {
         log.error("[Error] | Code: {} | Type: {} | Path: {} | Elapsed time: {} ms | Message: {}",
-                new Object[]{errorCode,
-                        ex.getClass().getTypeName(),
-                        this.webUtil.getRequestUri(),
-                        StructuredArguments.v("elapsed_time", this.webUtil.getElapsedTime()), errorMessage, ex});
+                errorCode, ex.getClass().getTypeName(), this.webUtil.getRequestUri(),
+                StructuredArguments.v("elapsed_time", this.webUtil.getElapsedTime()), errorMessage, ex);
     }
 
     protected void addErrorLog(Integer errorCode, String errorMessage, String exceptionType) {
         log.error("[Error] | Code: {} | Type: {} | Path: {} | Elapsed time: {} ms | Message: {}",
-                new Object[]{errorCode, exceptionType,
-                        this.webUtil.getRequestUri(),
-                        StructuredArguments.v("elapsed_time", this.webUtil.getElapsedTime()), errorMessage});
+                errorCode, exceptionType, this.webUtil.getRequestUri(),
+                StructuredArguments.v("elapsed_time", this.webUtil.getElapsedTime()), errorMessage);
     }
 }
