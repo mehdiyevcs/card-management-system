@@ -17,7 +17,7 @@ spring:
     password: admin123
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -43,5 +43,17 @@ application:
         email: "djalal.mekhtiyev@gmail.com"
         phone: "+994507991228"
 
-
+app:
+  clients:
+    event-service:
+      url: http://localhost:9004
+  kafka:
+    bootstrap-servers: localhost:9092
+    application-id-config: ms-card
+    transaction-id-prefix: tnx-01
+    idempotence: true
+    acks: all
+    topic:
+      card-order-storage: topic-card-order-storage
+      card-order-processing: topic-card-order-processing
 

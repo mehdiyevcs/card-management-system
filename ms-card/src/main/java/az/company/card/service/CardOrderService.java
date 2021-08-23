@@ -1,5 +1,6 @@
 package az.company.card.service;
 
+import az.company.card.config.properties.KafkaProperties;
 import az.company.card.domain.enumeration.CardOrderOperationType;
 import az.company.card.domain.enumeration.OrderStatus;
 import az.company.card.dto.CardOrderDto;
@@ -8,6 +9,7 @@ import az.company.card.error.exception.InvalidInputException;
 import az.company.card.error.exception.NotFoundException;
 import az.company.card.error.validation.ValidationMessage;
 import az.company.card.mapper.CardOrderMapper;
+import az.company.card.messaging.MessageSender;
 import az.company.card.repository.CardOrderRepository;
 import az.company.card.util.ConvertUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,6 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CardOrderService {
 
@@ -35,6 +36,8 @@ public class CardOrderService {
     private final CardOrderRepository cardOrderRepository;
     private final CardOrderMapper cardOrderMapper;
     private final CardOrderOperationService cardOrderOperationService;
+    private final MessageSender messageSender;
+    private final KafkaProperties kafkaProperties;
 
     public List<CardOrderDto> getCardOrders() {
         return cardOrderRepository.findAllByUserId(USER_ID1)
@@ -47,6 +50,7 @@ public class CardOrderService {
         return cardOrderRepository.findByIdAndUserId(id, USER_ID1).map(cardOrderMapper::toDto);
     }
 
+    @Transactional
     public CardOrderDto createCardOrder(CardOrderDto cardOrderDto) {
         log.debug("createCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
@@ -116,8 +120,8 @@ public class CardOrderService {
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);
 
-        log.info("Kafka event has been published");
-        //Kafka Event publishing, need to be implemented
+        messageSender.send(cardOrder);
+        log.info("Kafka event has been published...");
 
         return cardOrderMapper.toDto(cardOrder);
     }

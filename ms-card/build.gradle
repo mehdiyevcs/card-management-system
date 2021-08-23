@@ -49,6 +49,8 @@ dependencies {
     implementation "javax.validation:validation-api:${javax_validation_version}"
 
     implementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
+
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 test {
