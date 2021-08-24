@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'org.sonarqube' version '3.0'
+    id "org.liquibase.gradle" version "2.0.1"
 }
 
 group = 'az.company'
@@ -40,6 +41,8 @@ dependencies {
     implementation "io.springfox:springfox-swagger-ui:${springfox_version}"
 
     implementation "org.postgresql:postgresql:42.1.1"
+    implementation 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.postgresql:postgresql'
 
     implementation "org.mapstruct:mapstruct:${mapstruct_version}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
