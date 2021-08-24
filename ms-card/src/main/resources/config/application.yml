@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 logging:
   level:
@@ -8,18 +8,12 @@ logging:
 
 spring:
   application:
-    name: ms-card-order
-  rabbitmq:
-    virtual-host: /
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    name: ms-card
   liquibase:
     change-log: classpath:config/liquibase/changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/cms_cardorder_db
-    username: cardorder_admin
+    url: jdbc:postgresql://localhost:5435/cms_card_db
+    username: card_admin
     password: admin123
   jpa:
     hibernate:
@@ -35,7 +29,7 @@ spring:
 
 application:
   swagger:
-    base-package: "az.company.cardorder.controller"
+    base-package: "az.company.card.controller"
     paths: "/.*"
     apiInfo:
       version: 1.0

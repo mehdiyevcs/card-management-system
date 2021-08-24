@@ -3,7 +3,7 @@ package az.company.cardorder.constant;
 /**
  * @author MehdiyevCS on 23.08.21
  */
-public interface CommonConstants {
+public interface ApplicationConstants {
 
     interface HttpAttribute {
         String REQUEST_ID = "request_id";
