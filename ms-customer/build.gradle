@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.boot:spring-boot-starter-security"
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -49,6 +50,9 @@ dependencies {
     implementation "javax.annotation:javax.annotation-api:${javax_annotation_version}"
     implementation "javax.validation:validation-api:${javax_validation_version}"
 
+    implementation "io.jsonwebtoken:jjwt-api:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-impl:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jwt_version}"
 }
 
 test {
