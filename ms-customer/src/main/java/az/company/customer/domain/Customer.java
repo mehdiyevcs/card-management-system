@@ -26,4 +26,7 @@ public class Customer {
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
+
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 }

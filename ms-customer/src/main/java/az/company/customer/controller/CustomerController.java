@@ -1,6 +1,7 @@
 package az.company.customer.controller;
 
 import az.company.customer.dto.CustomerDto;
+import az.company.customer.model.CreateCustomerRequest;
 import az.company.customer.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,14 +34,14 @@ public class CustomerController {
     }
 
     @GetMapping("/customer")
-    public Optional<CustomerDto> getCustomer(@RequestParam Long id,
-                                             @RequestParam String pin) {
+    public Optional<CustomerDto> getCustomer(@RequestParam(required = false) Long id,
+                                             @RequestParam(required = false) String pin) {
         return customerService.getCustomer(id, pin);
     }
 
     @PostMapping("/customer")
-    public CustomerDto createCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        return customerService.save(customerDto);
+    public CustomerDto createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
+        return customerService.save(createCustomerRequest);
     }
 
 }

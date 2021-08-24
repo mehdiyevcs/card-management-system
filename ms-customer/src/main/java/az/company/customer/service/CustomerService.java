@@ -2,6 +2,7 @@ package az.company.customer.service;
 
 import az.company.customer.dto.CustomerDto;
 import az.company.customer.mapper.CustomerMapper;
+import az.company.customer.model.CreateCustomerRequest;
 import az.company.customer.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,11 +41,17 @@ public class CustomerService {
                 .map(customerMapper::toDto);
     }
 
-    public CustomerDto save(CustomerDto customerDto) {
-        if (getCustomer(null, customerDto.getPin()).isPresent())
+    public CustomerDto save(CreateCustomerRequest createCustomerRequest) {
+        if (getCustomer(null, createCustomerRequest.getPin()).isPresent())
             throw new RuntimeException("Customer with Pin already exists");
 
+        var customerDto = CustomerDto.builder()
+                .pin(createCustomerRequest.getPin())
+                .fullName(createCustomerRequest.getFullName())
+                .build();
+
         var customer = customerMapper.toEntity(customerDto);
+        customer.setUserId(12345L);
         customer = customerRepository.save(customer);
         return customerMapper.toDto(customer);
     }

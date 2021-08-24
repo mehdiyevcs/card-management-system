@@ -16,6 +16,9 @@
             <column name="full_name" type="varchar2(200)">
                 <constraints nullable="false"/>
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
