@@ -98,9 +98,9 @@ public class TokenCreator {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    public static boolean validateJwtToken(String authToken) {
+    public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(JwtConstants.JWT_SECRET)
+            Jwts.parser().setSigningKey(tokenProperties.getBase64Secret())
                     .parseClaimsJws(authToken);
             return true;
         } catch (ExpiredJwtException exception) {
