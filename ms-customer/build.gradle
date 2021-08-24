@@ -1,0 +1,56 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'checkstyle'
+    id 'org.sonarqube' version '3.0'
+    id "org.liquibase.gradle" version "2.0.1"
+}
+
+group = 'com.company.customer'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    implementation "org.postgresql:postgresql:42.1.1"
+    //implementation 'org.liquibase:liquibase-core'
+    //liquibaseRuntime 'org.postgresql:postgresql'
+    //implementation "hu.gyuuu.liquibase-kubernetes:liquibase-kubernetes:${liquibase_kubernetes_version}"
+
+    implementation "io.springfox:springfox-swagger2:${springfox_version}"
+    implementation "io.springfox:springfox-bean-validators:${springfox_version}"
+    implementation "io.springfox:springfox-swagger-ui:${springfox_version}"
+
+    implementation "org.mapstruct:mapstruct:${mapstruct_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion '8.23' // default version is 8.27 for gradle 6.6.1, but checkstyle.xml doesn't work with that version
+}

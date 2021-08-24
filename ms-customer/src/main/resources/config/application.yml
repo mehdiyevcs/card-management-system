@@ -1,0 +1,27 @@
+server:
+  port: 8082
+
+logging:
+  level:
+    ROOT: INFO
+    az.kapitalbank.tg: DEBUG
+
+spring:
+  application:
+    name: ms-customer
+
+application:
+  swagger:
+    base-package: "az.company.customer.controller"
+    paths: "/.*"
+    apiInfo:
+      version: 1.0
+      title: "Customer Management System Rest API"
+      description: "Spring Boot REST API for Customer Management System"
+      termsOfServiceUrl:
+      license: "Apache License Version 2.0"
+      licenseUrl: "https://www.apache.org/licenses/LICENSE-2.0"
+      contact:
+        name: "Jalal Mehdiyev"
+        email: "djalal.mekhtiyev@gmail.com"
+        phone: "+994507991228"

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="01_initial_schema" author="MehdiyevCS">
+
+        <createTable tableName="card_order">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="status" type="varchar2(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_type" type="varchar2(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_holder_full_name" type="varchar2(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="period" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="urgent" type="boolean"/>
+            <column name="code_word" type="varchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_holder_pin" type="varchar2(7)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime"/>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="varchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="card">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_type" type="varchar2(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_number" type="varchar2(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_number" type="varchar2(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_order_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="card_fk1"
+                             referencedTableName="card_order"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <createTable tableName="card_order_operation">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="operation_type" type="varchar2(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar2(200)"/>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_order_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="card_order_operation_fk1"
+                             referencedTableName="card_order"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

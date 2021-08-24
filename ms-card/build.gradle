@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'org.sonarqube' version '3.0'
+    id "org.liquibase.gradle" version "2.0.1"
 }
 
 group = 'az.company'
@@ -23,7 +24,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -37,6 +38,22 @@ dependencies {
 
     implementation "io.springfox:springfox-swagger2:${springfox_version}"
     implementation "io.springfox:springfox-bean-validators:${springfox_version}"
+    implementation "io.springfox:springfox-swagger-ui:${springfox_version}"
+
+    implementation "org.postgresql:postgresql:42.1.1"
+    implementation 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.postgresql:postgresql'
+
+    implementation "org.mapstruct:mapstruct:${mapstruct_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+
+    compileOnly "javax.servlet:javax.servlet-api:${javax_servlet_version}"
+    implementation "javax.annotation:javax.annotation-api:${javax_annotation_version}"
+    implementation "javax.validation:validation-api:${javax_validation_version}"
+
+    implementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
+
+    implementation 'org.springframework.kafka:spring-kafka'
 }
 
 test {
@@ -46,3 +63,4 @@ test {
 checkstyle {
     toolVersion '8.23' // default version is 8.27 for gradle 6.6.1, but checkstyle.xml doesn't work with that version
 }
+
