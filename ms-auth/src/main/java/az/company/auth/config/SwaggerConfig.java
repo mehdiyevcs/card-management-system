@@ -1,6 +1,7 @@
 package az.company.auth.config;
 
 import az.company.auth.config.properties.ApplicationProperties;
+import az.company.auth.util.ApplicationConstants;
 import az.company.auth.util.SwaggerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +58,7 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("JWT", "HttpAttribute.AUTHORIZATION", "header");
+        return new ApiKey("JWT", ApplicationConstants.Attribute.AUTHORIZATION, "header");
     }
 
     private SecurityContext securityContext() {
