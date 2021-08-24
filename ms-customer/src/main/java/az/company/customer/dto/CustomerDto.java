@@ -1,7 +1,8 @@
 package az.company.customer.dto;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author MehdiyevCS on 24.08.21
