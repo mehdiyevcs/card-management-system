@@ -1,6 +1,5 @@
 package az.company.card.service;
 
-import az.company.card.domain.Card;
 import az.company.card.dto.CardDto;
 import az.company.card.mapper.CardMapper;
 import az.company.card.repository.CardRepository;
@@ -18,7 +17,7 @@ public class CardService {
     private final CardMapper cardMapper;
 
     public CardDto save(CardDto cardDto) {
-        Card card = cardMapper.toEntity(cardDto);
+        var card = cardMapper.toEntity(cardDto);
         card = cardRepository.save(card);
         return cardMapper.toDto(card);
     }

@@ -9,6 +9,12 @@ logging:
 spring:
   application:
     name: ms-card-order
+  rabbitmq:
+    virtual-host: /
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   liquibase:
     change-log: classpath:config/liquibase/changelog-master.xml
   datasource:
@@ -29,7 +35,7 @@ spring:
 
 application:
   swagger:
-    base-package: "az.company.card.controller"
+    base-package: "az.company.cardorder.controller"
     paths: "/.*"
     apiInfo:
       version: 1.0

@@ -1,6 +1,7 @@
 package az.company.cardorder.util;
 
-import az.company.cardorder.constant.CommonConstants;
+import az.company.cardorder.constant.ApplicationConstants;
+import az.company.cardorder.constant.ApplicationConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
@@ -29,7 +30,7 @@ public class WebUtil {
 
     public String getRequestId() {
         return Optional.ofNullable(httpServletRequest)
-                .map(req -> String.valueOf(req.getAttribute(CommonConstants.HttpAttribute.REQUEST_ID)))
+                .map(req -> String.valueOf(req.getAttribute(ApplicationConstants.HttpAttribute.REQUEST_ID)))
                 .orElse(null);
     }
 
@@ -41,7 +42,7 @@ public class WebUtil {
 
     public Long getElapsedTime() {
         return Optional.ofNullable(httpServletRequest)
-                .map(req -> String.valueOf(req.getAttribute(CommonConstants.HttpAttribute.ELAPSED_TIME)))
+                .map(req -> String.valueOf(req.getAttribute(ApplicationConstants.HttpAttribute.ELAPSED_TIME)))
                 .filter(StringUtils::isNumeric)
                 .map(t -> System.currentTimeMillis() - Long.parseLong(t))
                 .orElse(-1L);
@@ -49,16 +50,16 @@ public class WebUtil {
 
     public String getBearerTokenFromAuthorizationHeader() {
         return Optional
-                .ofNullable(httpServletRequest.getHeader(CommonConstants.HttpAttribute.AUTHORIZATION))
-                .filter(token -> token.startsWith(CommonConstants.HttpAttribute.BEARER))
+                .ofNullable(httpServletRequest.getHeader(ApplicationConstants.HttpAttribute.AUTHORIZATION))
+                .filter(token -> token.startsWith(ApplicationConstants.HttpAttribute.BEARER))
                 .orElse(null);
     }
 
     public void createHelperHttpAttributesAndPutToMdc(HttpServletRequest httpServletRequest) {
         final String requestId = CommonUtil.generateId();
-        httpServletRequest.setAttribute(CommonConstants.HttpAttribute.REQUEST_ID, requestId);
-        httpServletRequest.setAttribute(CommonConstants.HttpAttribute.ELAPSED_TIME, System.currentTimeMillis());
-        putMdcField(CommonConstants.HttpAttribute.REQUEST_ID, requestId);
+        httpServletRequest.setAttribute(ApplicationConstants.HttpAttribute.REQUEST_ID, requestId);
+        httpServletRequest.setAttribute(ApplicationConstants.HttpAttribute.ELAPSED_TIME, System.currentTimeMillis());
+        putMdcField(ApplicationConstants.HttpAttribute.REQUEST_ID, requestId);
     }
 
     public void putMdcField(String key, String value) {

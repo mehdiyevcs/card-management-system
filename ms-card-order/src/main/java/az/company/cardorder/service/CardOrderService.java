@@ -1,5 +1,6 @@
 package az.company.cardorder.service;
 
+import az.company.cardorder.constant.RabbitMQConstants;
 import az.company.cardorder.domain.enumeration.CardOrderOperationType;
 import az.company.cardorder.domain.enumeration.OrderStatus;
 import az.company.cardorder.dto.CardOrderDto;
@@ -8,6 +9,8 @@ import az.company.cardorder.error.exception.InvalidInputException;
 import az.company.cardorder.error.exception.NotFoundException;
 import az.company.cardorder.error.validation.ValidationMessage;
 import az.company.cardorder.mapper.CardOrderMapper;
+import az.company.cardorder.messaging.MessageProducer;
+import az.company.cardorder.messaging.event.CardOrderEvent;
 import az.company.cardorder.repository.CardOrderRepository;
 import az.company.cardorder.util.ConvertUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class CardOrderService {
     private final CardOrderRepository cardOrderRepository;
     private final CardOrderMapper cardOrderMapper;
     private final CardOrderOperationService cardOrderOperationService;
+    private final MessageProducer messageProducer;
 
     public List<CardOrderDto> getCardOrders() {
         return cardOrderRepository.findAllByUserId(USER_ID1)
@@ -116,7 +120,21 @@ public class CardOrderService {
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);
 
+        var cardOrderEvent = CardOrderEvent.builder()
+                .id(cardOrder.getId())
+                .status(cardOrder.getStatus())
+                .userId(cardOrder.getUserId())
+                .username(cardOrder.getUsername())
+                .cardType(cardOrder.getCardType())
+                .cardHolderFullName(cardOrder.getCardHolderFullName())
+                .cardHolderPin(cardOrder.getCardHolderPin())
+                .period(cardOrder.getPeriod())
+                .codeWord(cardOrder.getCodeWord())
+                .urgent(cardOrder.isUrgent()).build();
 
+        messageProducer.publish(RabbitMQConstants.EXCHANGE_TRANSFER,
+                RabbitMQConstants.ROUTING_KEY_CARD_ORDER_SUBMISSION,
+                cardOrderEvent);
         log.info("Rabbit event has been published...");
 
         return cardOrderMapper.toDto(cardOrder);
