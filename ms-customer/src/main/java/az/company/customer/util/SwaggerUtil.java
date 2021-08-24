@@ -1,13 +1,15 @@
-package az.company.card.util;
+package az.company.customer.util;
 
-import az.company.card.config.properties.ApplicationProperties;
+import az.company.customer.config.properties.ApplicationProperties;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 
 import java.util.Collections;
 
-public final class SwaggerUtil {
-
+/**
+ * @author MehdiyevCS on 24.08.21
+ */
+public class SwaggerUtil {
     private SwaggerUtil() {
     }
 

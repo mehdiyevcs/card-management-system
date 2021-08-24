@@ -2,3 +2,4 @@ rootProject.name = 'card-management-system'
 
 include 'ms-card'
 include 'ms-auth'
+include 'ms-customer'
