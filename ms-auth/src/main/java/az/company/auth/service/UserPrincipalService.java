@@ -1,6 +1,5 @@
 package az.company.auth.service;
 
-import az.company.auth.domain.User;
 import az.company.auth.model.UserPrincipal;
 import az.company.auth.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8084
 
 logging:
   level:
@@ -9,6 +9,8 @@ logging:
 spring:
   application:
     name: ms-auth
+  liquibase:
+    change-log: classpath:config/liquibase/changelog-master.xml
   datasource:
     url: jdbc:postgresql://localhost:5433/cms_auth_db
     username: auth_admin
