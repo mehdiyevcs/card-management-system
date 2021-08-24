@@ -57,3 +57,7 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+checkstyle {
+    toolVersion '8.23' // default version is 8.27 for gradle 6.6.1, but checkstyle.xml doesn't work with that version
+}

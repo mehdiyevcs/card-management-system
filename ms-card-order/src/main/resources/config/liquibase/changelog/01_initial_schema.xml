@@ -41,32 +41,6 @@
             </column>
         </createTable>
 
-        <createTable tableName="card">
-            <column name="id" autoIncrement="true" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="customer_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="card_type" type="varchar2(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="account_number" type="varchar2(16)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="card_number" type="varchar2(16)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="datetime">
-                <constraints nullable="false"/>
-            </column>
-            <column name="card_order_id" type="bigint">
-                <constraints nullable="false"
-                             foreignKeyName="card_fk1"
-                             referencedTableName="card_order"
-                             referencedColumnNames="id"/>
-            </column>
-        </createTable>
         <createTable tableName="card_order_operation">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true"/>

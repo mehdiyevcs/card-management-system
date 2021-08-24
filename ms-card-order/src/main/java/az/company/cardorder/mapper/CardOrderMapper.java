@@ -13,8 +13,8 @@ public interface CardOrderMapper extends EntityMapper<CardOrderDto, CardOrder> {
         if (id == null)
             return null;
 
-        var carOrder = new CardOrder();
-        carOrder.setId(id);
-        return carOrder;
+        var cardOrder = new CardOrder();
+        cardOrder.setId(id);
+        return cardOrder;
     }
 }

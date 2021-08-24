@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 logging:
   level:
@@ -8,12 +8,12 @@ logging:
 
 spring:
   application:
-    name: ms-card-order
+    name: ms-card
   liquibase:
     change-log: classpath:config/liquibase/changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/cms_cardorder_db
-    username: cardorder_admin
+    url: jdbc:postgresql://localhost:5435/cms_card_db
+    username: card_admin
     password: admin123
   jpa:
     hibernate:
