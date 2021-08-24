@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'checkstyle'
     id 'org.sonarqube' version '3.0'
+    id "org.liquibase.gradle" version "2.0.1"
 }
 
 group = 'az.company'
@@ -35,8 +36,11 @@ dependencies {
 
     implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_version}"
     implementation "org.apache.commons:commons-lang3:${apache_commons_version}"
-    
+
     implementation "org.postgresql:postgresql:42.1.1"
+    implementation 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.postgresql:postgresql'
+    //implementation "hu.gyuuu.liquibase-kubernetes:liquibase-kubernetes:${liquibase_kubernetes_version}"
 
     implementation "io.springfox:springfox-swagger2:${springfox_version}"
     implementation "io.springfox:springfox-bean-validators:${springfox_version}"

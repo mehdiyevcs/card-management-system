@@ -2,7 +2,10 @@ package az.company.auth.domain;
 
 import az.company.auth.domain.enumeration.UserRole;
 import az.company.auth.domain.enumeration.UserState;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,6 +28,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 @ToString(exclude = {"password"})
 public class User implements Serializable {
 
@@ -41,10 +47,10 @@ public class User implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(name = "passwd", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

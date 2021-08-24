@@ -3,7 +3,7 @@ package az.company.auth.service;
 import az.company.auth.model.JwtAuthenticationRequest;
 import az.company.auth.model.JwtAuthenticationResponse;
 import az.company.auth.repository.UserRepository;
-import az.company.auth.util.TokenUtil;
+import az.company.auth.security.TokenCreator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,14 +28,15 @@ public class AuthenticationService {
 
     private final UserRepository repository;
     private final AuthenticationManager authenticationManager;
+    private final TokenCreator tokenCreator;
 
     public JwtAuthenticationResponse login(JwtAuthenticationRequest jwtAuthenticationRequest) {
         authenticate(jwtAuthenticationRequest.getUsername(), jwtAuthenticationRequest.getPassword());
 
         var user = repository.findByUsername(jwtAuthenticationRequest.getUsername()).get();
 
-        String token = TokenUtil.generateToken(jwtAuthenticationRequest.getUsername(),
-                Arrays.asList(user.getRole().getName()),user.getId());
+        String token = tokenCreator.generateToken(jwtAuthenticationRequest.getUsername(),
+                Arrays.asList(user.getRole().getName()), user.getId());
         return new JwtAuthenticationResponse(token);
     }
 
@@ -59,6 +60,6 @@ public class AuthenticationService {
     }
 
     public String validateToken(String token) {
-        return TokenUtil.isTokenValid(token) ? "VALID TOKEN" : "INVALID TOKEN";
+        return tokenCreator.isTokenValid(token) ? "VALID TOKEN" : "INVALID TOKEN";
     }
 }

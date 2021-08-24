@@ -1,8 +1,7 @@
-package az.company.auth.config;
+package az.company.customer.config;
 
-import az.company.auth.filter.JwtAuthorizationFilter;
-import az.company.auth.security.TokenCreator;
-import az.company.auth.service.UserPrincipalService;
+import az.company.customer.filter.JwtAuthorizationFilter;
+import az.company.customer.security.TokenCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,28 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserPrincipalService userPrincipalService;
     private final TokenCreator tokenCreator;
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(passwordEncoder());
-        authProvider.setUserDetailsService(userPrincipalService);
-        return authProvider;
-    }
-
-    @Bean
-    BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider())
-                .userDetailsService(userPrincipalService)
-                .passwordEncoder(passwordEncoder());
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -1,8 +1,8 @@
-package az.company.auth.filter;
+package az.company.customer.security.filter;
 
-import az.company.auth.security.TokenCreator;
-import az.company.auth.util.ApplicationConstants;
-import az.company.auth.util.JwtConstants;
+import az.company.customer.security.TokenCreator;
+import az.company.customer.security.constants.JwtConstants;
+import az.company.customer.util.ApplicationConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
