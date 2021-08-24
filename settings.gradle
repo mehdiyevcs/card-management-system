@@ -1,5 +1,5 @@
 rootProject.name = 'card-management-system'
 
-include 'ms-card'
+include 'ms-card-order'
 include 'ms-auth'
 include 'ms-customer'
