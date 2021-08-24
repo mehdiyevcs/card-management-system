@@ -1,4 +1,4 @@
-package az.company.customer.filter;
+package az.company.customer.security.filter;
 
 import az.company.customer.security.TokenCreator;
 import az.company.customer.security.constants.JwtConstants;
