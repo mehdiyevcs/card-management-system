@@ -9,15 +9,31 @@ logging:
 spring:
   application:
     name: ms-customer
-
+  liquibase:
+    change-log: classpath:config/liquibase/changelog-master.xml
+  datasource:
+    url: jdbc:postgresql://localhost:5434/cms_customer_db
+    username: customer_admin
+    password: admin123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false  #look what is it
+    generate-ddl: true
+    naming: #look what is it
+      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 application:
   swagger:
     base-package: "az.company.customer.controller"
     paths: "/.*"
     apiInfo:
       version: 1.0
-      title: "Customer Management System Rest API"
-      description: "Spring Boot REST API for Customer Management System"
+      title: "MS-Customer Rest API"
+      description: "Spring Boot REST API for MS-Customer"
       termsOfServiceUrl:
       license: "Apache License Version 2.0"
       licenseUrl: "https://www.apache.org/licenses/LICENSE-2.0"
