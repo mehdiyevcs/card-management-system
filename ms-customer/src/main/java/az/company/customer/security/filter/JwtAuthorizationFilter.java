@@ -1,8 +1,9 @@
-package az.company.auth.filter;
+package az.company.customer.security.filter;
 
-import az.company.auth.util.ApplicationConstants;
-import az.company.auth.util.JwtConstants;
-import az.company.auth.util.TokenUtil;
+import az.company.customer.security.TokenCreator;
+import az.company.customer.security.constants.JwtConstants;
+import az.company.customer.util.ApplicationConstants;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +27,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
+    private final TokenCreator tokenCreator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -55,8 +59,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String jwtToken = extractJwtFromHeader(request);
 
-        if (Objects.nonNull(jwtToken) && TokenUtil.validateJwtToken(jwtToken)) {
-            var claims = TokenUtil.getAllClaimsFromToken(jwtToken);
+        if (Objects.nonNull(jwtToken) && tokenCreator.validateJwtToken(jwtToken)) {
+            var claims = tokenCreator.getAllClaimsFromToken(jwtToken);
             String username = claims.getSubject();
             log.info("Username extracted from token: {}: ", username);
 

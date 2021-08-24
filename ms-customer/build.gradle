@@ -24,8 +24,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "org.springframework.boot:spring-boot-starter-security"
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -34,8 +35,8 @@ dependencies {
     }
 
     implementation "org.postgresql:postgresql:42.1.1"
-    //implementation 'org.liquibase:liquibase-core'
-    //liquibaseRuntime 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
+    liquibaseRuntime 'org.postgresql:postgresql'
     //implementation "hu.gyuuu.liquibase-kubernetes:liquibase-kubernetes:${liquibase_kubernetes_version}"
 
     implementation "io.springfox:springfox-swagger2:${springfox_version}"
@@ -45,6 +46,13 @@ dependencies {
     implementation "org.mapstruct:mapstruct:${mapstruct_version}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
 
+    compileOnly "javax.servlet:javax.servlet-api:${javax_servlet_version}"
+    implementation "javax.annotation:javax.annotation-api:${javax_annotation_version}"
+    implementation "javax.validation:validation-api:${javax_validation_version}"
+
+    implementation "io.jsonwebtoken:jjwt-api:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-impl:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jwt_version}"
 }
 
 test {
