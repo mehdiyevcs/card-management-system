@@ -1,6 +1,7 @@
 package az.company.auth.config;
 
 import az.company.auth.filter.JwtAuthorizationFilter;
+import az.company.auth.security.TokenCreator;
 import az.company.auth.service.UserPrincipalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserPrincipalService userPrincipalService;
+    private final TokenCreator tokenCreator;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -55,11 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/api/auth/login", "/api/ping","/api/user")
+                .antMatchers("/api/auth/login", "/api/ping", "/api/user")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAfter(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JwtAuthorizationFilter(tokenCreator), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

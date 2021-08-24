@@ -46,9 +46,8 @@ application:
   security:
     authentication:
       jwt:
-        base64-secret: YTJGd2FYUmhiR0poYm10d1lYbHRaVzUwYzJJeVluUnlZVzV6Wm1WeVoyRjBaWGRoZVdwM2RITmxZM0psZEd0bGVYUXhkREowTTNRMGREVjBOa0JrWlhZag==
-        access-token-validity-in-seconds: 900
-        refresh-token-validity-in-seconds: 3600
+        base64-secret: QjJCX1BBWU1FTlRfU09MVVRJT05THDSGIGDSUGAISdHOo123dSDSDADIOSUDSIUGFVSDSDsWC2sda41SADSDVDASDV==
+        token-validity-in-seconds: 900
 
 
 
