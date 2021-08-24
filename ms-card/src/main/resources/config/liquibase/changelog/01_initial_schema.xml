@@ -20,7 +20,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="period" type="int">
-                <constraints nullable="false"
+                <constraints nullable="false"/>
             </column>
             <column name="urgent" type="boolean"/>
             <column name="code_word" type="varchar2(50)">
