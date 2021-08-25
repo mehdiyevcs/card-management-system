@@ -1,5 +1,6 @@
 package az.company.customer.model;
 
+import az.company.customer.error.validation.constraints.Pin;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class CreateCustomerRequest {
-    @NotNull
+    @Pin
     private String pin;
 
     @NotNull

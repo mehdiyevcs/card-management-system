@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="02_insert_test_data.xml" author="MehdiyevCS">
+        <insert tableName="customer">
+            <column name="pin" value="TEST111"/>
+            <column name="full_name" value="test user"/>
+            <column name="user_id" value="1"/>
+        </insert>
+
+        <insert tableName="customer">
+            <column name="pin" value="TEST112"/>
+            <column name="full_name" value="test user1"/>
+            <column name="user_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -34,6 +34,9 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstash_logback_version}"
+    implementation "org.apache.commons:commons-lang3:${apache_commons_version}"
+
     implementation "org.postgresql:postgresql:42.1.1"
     implementation 'org.liquibase:liquibase-core'
     liquibaseRuntime 'org.postgresql:postgresql'
