@@ -20,5 +20,5 @@ public class CustomerDto {
     private String pin;
     @NotNull
     private String fullName;
-    private Long userId;
+    private String username;
 }

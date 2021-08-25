@@ -31,10 +31,10 @@ public class SwaggerConfig {
     @Bean
     public Docket docket() {
         log.debug("Starting Swagger");
-        StopWatch watch = new StopWatch();
+        var watch = new StopWatch();
         watch.start();
 
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+        var docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))
                 .paths(regex(properties.getPaths()))

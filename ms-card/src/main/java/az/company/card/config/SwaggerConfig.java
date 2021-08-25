@@ -2,7 +2,6 @@ package az.company.card.config;
 
 import az.company.card.config.properties.ApplicationProperties;
 import az.company.card.util.SwaggerUtil;
-import az.company.card.util.SwaggerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,10 +32,10 @@ public class SwaggerConfig {
     @Bean
     public Docket docket() {
         log.debug("Starting Swagger");
-        StopWatch watch = new StopWatch();
+        var watch = new StopWatch();
         watch.start();
 
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+        var docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))
                 .paths(regex(properties.getPaths()))

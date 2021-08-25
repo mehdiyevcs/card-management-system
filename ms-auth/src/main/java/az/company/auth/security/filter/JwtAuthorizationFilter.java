@@ -2,7 +2,7 @@ package az.company.auth.filter;
 
 import az.company.auth.security.TokenCreator;
 import az.company.auth.security.constants.JwtConstants;
-import az.company.auth.util.ApplicationConstants;
+import az.company.auth.constant.ApplicationConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String clientIP = Optional
-                .ofNullable(request.getHeader(ApplicationConstants.Attribute.X_FORWARDED_FOR))
+                .ofNullable(request.getHeader(ApplicationConstants.HttpAttribute.X_FORWARDED_FOR))
                 .orElse(request.getRemoteAddr());
         String requestURI = Optional.ofNullable(request)
                 .map(req -> req.getMethod() + " " + req.getRequestURI())

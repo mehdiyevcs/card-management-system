@@ -1,8 +1,8 @@
 package az.company.auth.security;
 
 import az.company.auth.config.properties.TokenProperties;
-import az.company.auth.util.FormatterUtil;
 import az.company.auth.security.constants.JwtConstants;
+import az.company.auth.util.FormatterUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -59,11 +59,9 @@ public class TokenCreator {
     }
 
     public String generateToken(String username,
-                                List<String> roleList,
-                                Long userId) {
+                                List<String> roleList) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roleList);
-        claims.put("user_id", userId);
         return doGenerateToken(claims, username);
     }
 

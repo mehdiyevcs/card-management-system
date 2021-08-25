@@ -28,6 +28,5 @@ public class CardOrderDto {
     private String cardHolderPin;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Integer userId;
     private String username;
 }

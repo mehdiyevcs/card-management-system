@@ -1,5 +1,7 @@
 package az.company.cardorder.error;
 
+import az.company.cardorder.client.error.MsCustomerErrorResponse;
+import az.company.cardorder.client.error.MsCustomerException;
 import az.company.cardorder.error.exception.CommonException;
 import az.company.cardorder.error.exception.InvalidInputException;
 import az.company.cardorder.error.exception.NotFoundException;
@@ -42,6 +44,22 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     public ErrorHandler() {
 
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MsCustomerException.class)
+    public ErrorResponse handleMsCustomerException(MsCustomerException ex) {
+        MsCustomerErrorResponse errorResponse = Optional.ofNullable(ex.getErrorResponse())
+                .orElse(new MsCustomerErrorResponse("000", 500, "Something went wrong!"));
+
+        var message = String.format("Ms Customer error; id: %s, message: %s",
+                errorResponse.getId(), errorResponse.getMessage());
+        addErrorLog(errorResponse.getCode(), message, "MsCustomerException");
+
+        return new ErrorResponse(
+                webUtil.getRequestId(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                message);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -25,6 +25,5 @@ public class CardOrderEvent implements Serializable {
     private boolean urgent;
     private String codeWord;
     private String cardHolderPin;
-    private Long userId;
     private String username;
 }
