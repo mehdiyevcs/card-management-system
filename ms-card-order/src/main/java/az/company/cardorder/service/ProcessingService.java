@@ -25,24 +25,6 @@ public class ProcessingService {
     private final CardOrderOperationService cardOrderOperationService;
     private final CardOrderService cardOrderService;
 
-    public void publishCardOrderEvent(CardOrder cardOrder) {
-        var cardOrderEvent = CardOrderEvent.builder()
-                .id(cardOrder.getId())
-                .status(cardOrder.getStatus())
-                .userId(cardOrder.getUserId())
-                .username(cardOrder.getUsername())
-                .cardType(cardOrder.getCardType())
-                .cardHolderFullName(cardOrder.getCardHolderFullName())
-                .cardHolderPin(cardOrder.getCardHolderPin())
-                .period(cardOrder.getPeriod())
-                .codeWord(cardOrder.getCodeWord())
-                .urgent(cardOrder.isUrgent()).build();
-
-        messageProducer.publish(RabbitMQConstants.EXCHANGE_TRANSFER,
-                RabbitMQConstants.ROUTING_KEY_CARD_ORDER_SUBMISSION,
-                cardOrderEvent);
-    }
-
     public void processCardOrderResultEvent(CardOrderResultEvent cardOrderResultEvent) {
         var cardOrder = cardOrderService.getCardOrder(cardOrderResultEvent.getId())
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));

@@ -10,6 +10,7 @@ public interface ApplicationConstants {
         String ELAPSED_TIME = "elapsed_time";
         String AUTHORIZATION = "Authorization";
         String BEARER = "Bearer ";
+        String X_FORWARDED_FOR = "X-Forwarded-For";
     }
 
 }
