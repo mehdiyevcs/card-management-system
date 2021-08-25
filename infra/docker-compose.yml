@@ -1,37 +1,5 @@
 version: '3.3'
 services:
-  ms-auth:
-    container_name: ms-auth-container
-    image: ms-auth:latest
-    build: ./
-    ports:
-      - "8081:8081"
-    depends_on:
-      - db_auth
-  ms-card:
-    container_name: ms-card-container
-    image: ms-card:latest
-    build: ./
-    ports:
-      - "8082:8082"
-    depends_on:
-      - db_card
-  ms-card-order:
-    container_name: ms-card-order-container
-    image: ms-card-order:latest
-    build: ./
-    ports:
-      - "8081:8081"
-    depends_on:
-      - db_card_order
-  ms-customer:
-    container_name: ms-customer-container
-    image: ms-customer:latest
-    build: ./
-    ports:
-      - "8083:8083"
-    depends_on:
-      - db_customer
   db_card_order:
     container_name: cms_cardorder_db
     image: postgres
