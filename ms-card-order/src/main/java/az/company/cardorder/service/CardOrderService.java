@@ -3,7 +3,6 @@ package az.company.cardorder.service;
 import az.company.cardorder.domain.enumeration.CardOrderOperationType;
 import az.company.cardorder.domain.enumeration.OrderStatus;
 import az.company.cardorder.dto.CardOrderDto;
-import az.company.cardorder.dto.CardOrderOperationDto;
 import az.company.cardorder.error.exception.InvalidInputException;
 import az.company.cardorder.error.exception.NotFoundException;
 import az.company.cardorder.error.validation.ValidationMessage;
@@ -47,9 +46,16 @@ public class CardOrderService {
         return cardOrderRepository.findByIdAndUserId(id, USER_ID1).map(cardOrderMapper::toDto);
     }
 
+    public CardOrderDto save(CardOrderDto cardOrderDto) {
+        var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
+        cardOrder.setUserId(USER_ID1);
+        cardOrder = cardOrderRepository.save(cardOrder);
+        return cardOrderMapper.toDto(cardOrder);
+    }
+
     public CardOrderDto createCardOrder(CreateCardOrderRequest createCardOrderRequest) {
 
-        CardOrderDto cardOrderDto = CardOrderDto.builder()
+        var cardOrderDto = CardOrderDto.builder()
                 .cardHolderFullName(createCardOrderRequest.getCardHolderFullName())
                 .cardHolderPin(createCardOrderRequest.getCardHolderPin())
                 .cardType(createCardOrderRequest.getCardType())
@@ -81,10 +87,11 @@ public class CardOrderService {
         }
 
         //Log the operation being carried out
-        createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.EDITION,
                 cardOrder.getStatus(),
-                OrderStatus.EDITED);
+                OrderStatus.EDITED,
+                null);
 
         cardOrderDto.setStatus(OrderStatus.EDITED);
         cardOrder = cardOrderRepository.save(cardOrderMapper.toEntity(cardOrderDto));
@@ -99,10 +106,11 @@ public class CardOrderService {
         checkStatus(cardOrder.getStatus());
 
         //Log the operation being carried out
-        createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.DELETION,
                 cardOrder.getStatus(),
-                OrderStatus.DELETED);
+                OrderStatus.DELETED,
+                null);
 
         //Delete from the main table
         cardOrder.setStatus(OrderStatus.DELETED);
@@ -118,33 +126,17 @@ public class CardOrderService {
         checkStatus(cardOrder.getStatus());
 
         //Log the operation being carried out
-        createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.SUBMISSION,
                 cardOrder.getStatus(),
-                OrderStatus.SUBMITTED);
+                OrderStatus.SUBMITTED,
+                null);
 
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);
 
         processingService.publishCardOrderEvent(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
-    }
-
-    private void createOperation(Long cardOrderId,
-                                 CardOrderOperationType operationType,
-                                 OrderStatus oldStatus,
-                                 OrderStatus newStatus) {
-        log.info("Status of the card order {} changed from {} to {}",
-                cardOrderId, oldStatus, newStatus);
-        var cardOrderOperationDto = CardOrderOperationDto.builder()
-                .cardOrder(cardOrderId)
-                .createdAt(LocalDateTime.now())
-                .orderOperationType(operationType)
-                .createdBy("Anon")
-                .description(String.format("Status changed from %s to %s",
-                        oldStatus, newStatus))
-                .build();
-        cardOrderOperationService.save(cardOrderOperationDto);
     }
 
     private void checkStatus(OrderStatus orderStatus) {

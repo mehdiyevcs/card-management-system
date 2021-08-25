@@ -2,7 +2,6 @@ package az.company.cardorder.mapper;
 
 import az.company.cardorder.domain.CardOrderOperation;
 import az.company.cardorder.dto.CardOrderOperationDto;
-import az.company.cardorder.mapper.EntityMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
