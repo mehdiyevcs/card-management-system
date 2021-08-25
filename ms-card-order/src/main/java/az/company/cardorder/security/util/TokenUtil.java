@@ -2,7 +2,6 @@ package az.company.cardorder.security.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class TokenUtil {
 
     public static Optional<String> getUsernameFromContextHolder() {
-        Authentication authResult = SecurityContextHolder.getContext().getAuthentication();
+        var authResult = SecurityContextHolder.getContext().getAuthentication();
 
         if (authResult instanceof UsernamePasswordAuthenticationToken) {
             var authToken = (UsernamePasswordAuthenticationToken) authResult;

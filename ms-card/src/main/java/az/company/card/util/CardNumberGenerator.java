@@ -1,6 +1,7 @@
 package az.company.card.util;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -15,24 +16,6 @@ public class CardNumberGenerator {
 
     public static final String[] VISA_PREFIX_LIST = new String[]{"4539",
             "4556", "4916", "4532", "4929", "40240071", "4485", "4716", "4"};
-
-    public static final String[] MASTERCARD_PREFIX_LIST2 = new String[]{"51",
-            "52", "53", "54", "55"};
-
-    public static final String[] AMEX_PREFIX_LIST = new String[]{"34", "37"};
-
-    public static final String[] DISCOVER_PREFIX_LIST = new String[]{"6011"};
-
-    public static final String[] DINERS_PREFIX_LIST = new String[]{"300",
-            "301", "302", "303", "36", "38"};
-
-    public static final String[] ENROUTE_PREFIX_LIST = new String[]{"2014",
-            "2149"};
-
-    public static final String[] JCB_PREFIX_LIST = new String[]{"35"};
-
-    public static final String[] VOYAGER_PREFIX_LIST = new String[]{"8699"};
-
 
     static String strrev(String str) {
         if (str == null)
@@ -61,8 +44,8 @@ public class CardNumberGenerator {
                     .valueOf(reversedCCnumberString.charAt(i))));
         }
 
-        int sum = 0;
-        int pos = 0;
+        var sum = 0;
+        var pos = 0;
 
         Integer[] reversedCCnumber = reversedCCnumberList
                 .toArray(new Integer[reversedCCnumberList.size()]);
@@ -81,7 +64,7 @@ public class CardNumberGenerator {
             pos += 2;
         }
 
-        int checkdigit = new Double(
+        var checkdigit = new Double(
                 ((Math.floor(sum / 10) + 1) * 10 - sum) % 10).intValue();
         ccnumber += checkdigit;
 
@@ -89,11 +72,13 @@ public class CardNumberGenerator {
 
     }
 
-    public static String[] credit_card_number(String[] prefixList, int length, int howMany) {
+    public static String[] creditCardNumber(String[] prefixList, int length, int howMany) {
 
-        Stack<String> result = new Stack<String>();
-        for (int i = 0; i < howMany; i++) {
-            int randomArrayIndex = (int) Math.floor(Math.random() * prefixList.length);
+        Random random = new Random();
+
+        Stack<String> result = new Stack<>();
+        for (var i = 0; i < howMany; i++) {
+            int randomArrayIndex = (int) Math.floor(random.nextInt() * prefixList.length);
             String ccnumber = prefixList[randomArrayIndex];
             result.push(completed_number(ccnumber, length));
         }
@@ -102,27 +87,27 @@ public class CardNumberGenerator {
     }
 
     public static String[] generateMasterCardNumbers(int howMany) {
-        return credit_card_number(MASTERCARD_PREFIX_LIST, 16, howMany);
+        return creditCardNumber(MASTERCARD_PREFIX_LIST, 16, howMany);
     }
 
     public static String generateMasterCardNumber() {
-        return credit_card_number(MASTERCARD_PREFIX_LIST, 16, 1)[0];
+        return creditCardNumber(MASTERCARD_PREFIX_LIST, 16, 1)[0];
     }
 
     public static boolean isValidCreditCardNumber(String creditCardNumber) {
-        boolean isValid = false;
+        var isValid = false;
 
         try {
-            String reversedNumber = new StringBuffer(creditCardNumber)
+            var reversedNumber = new StringBuffer(creditCardNumber)
                     .reverse().toString();
-            int mod10Count = 0;
-            for (int i = 0; i < reversedNumber.length(); i++) {
-                int augend = Integer.parseInt(String.valueOf(reversedNumber
+            var mod10Count = 0;
+            for (var i = 0; i < reversedNumber.length(); i++) {
+                var augend = Integer.parseInt(String.valueOf(reversedNumber
                         .charAt(i)));
                 if (((i + 1) % 2) == 0) {
-                    String productString = String.valueOf(augend * 2);
+                    var productString = String.valueOf(augend * 2);
                     augend = 0;
-                    for (int j = 0; j < productString.length(); j++) {
+                    for (var j = 0; j < productString.length(); j++) {
                         augend += Integer.parseInt(String.valueOf(productString
                                 .charAt(j)));
                     }

@@ -1,13 +1,10 @@
 package az.company.cardorder.service;
 
-import az.company.cardorder.constant.RabbitMQConstants;
-import az.company.cardorder.domain.CardOrder;
 import az.company.cardorder.domain.enumeration.CardOrderOperationType;
 import az.company.cardorder.domain.enumeration.OrderStatus;
 import az.company.cardorder.error.exception.NotFoundException;
 import az.company.cardorder.error.validation.ValidationMessage;
 import az.company.cardorder.messaging.MessageProducer;
-import az.company.cardorder.messaging.event.CardOrderEvent;
 import az.company.cardorder.messaging.event.CardOrderResultEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

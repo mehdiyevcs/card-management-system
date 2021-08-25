@@ -23,7 +23,7 @@ public class ProcessingService {
     private final CardService cardService;
 
     public void processCardOrderEvent(CardOrderEvent cardOrderEvent) {
-        CardDto cardDto = CardDto.builder()
+        var cardDto = CardDto.builder()
                 .orderId(cardOrderEvent.getId())
                 .customerId(12345L)
                 .createdAt(LocalDateTime.now())
@@ -32,7 +32,7 @@ public class ProcessingService {
                 .accountNumber(CardNumberGenerator.generateMasterCardNumber()).build();
         cardService.save(cardDto);
 
-        CardOrderResultEvent cardOrderResultEvent = CardOrderResultEvent.builder()
+        var cardOrderResultEvent = CardOrderResultEvent.builder()
                 .id(cardOrderEvent.getId())
                 .orderStatus(OrderStatus.COMPLETED)
                 .description("Success").build();

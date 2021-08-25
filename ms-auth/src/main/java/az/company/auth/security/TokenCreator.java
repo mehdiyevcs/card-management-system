@@ -1,8 +1,8 @@
 package az.company.auth.security;
 
 import az.company.auth.config.properties.TokenProperties;
-import az.company.auth.util.FormatterUtil;
 import az.company.auth.security.constants.JwtConstants;
+import az.company.auth.util.FormatterUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.ExpiredJwtException;

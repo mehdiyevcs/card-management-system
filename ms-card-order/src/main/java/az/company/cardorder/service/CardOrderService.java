@@ -38,23 +38,23 @@ public class CardOrderService {
     private final CardOrderOperationService cardOrderOperationService;
     private final MessageProducer messageProducer;
 
-    private final static String username = TokenUtil.getUsernameFromContextHolder()
+    private static final String userName = TokenUtil.getUsernameFromContextHolder()
             .orElse("anonymous");
 
     public List<CardOrderDto> getCardOrders() {
-        return cardOrderRepository.findAllByUsername(username)
+        return cardOrderRepository.findAllByUsername(userName)
                 .stream()
                 .map(cardOrderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public Optional<CardOrderDto> getCardOrder(Long id) {
-        return cardOrderRepository.findByIdAndUsername(id, username).map(cardOrderMapper::toDto);
+        return cardOrderRepository.findByIdAndUsername(id, userName).map(cardOrderMapper::toDto);
     }
 
     public CardOrderDto save(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
-        cardOrder.setUsername(username);
+        cardOrder.setUsername(userName);
         cardOrder = cardOrderRepository.save(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
     }
@@ -70,13 +70,13 @@ public class CardOrderService {
                 .codeWord(createCardOrderRequest.getCodeWord())
                 .createdAt(LocalDateTime.now())
                 .period(createCardOrderRequest.getPeriod())
-                .username(username)
+                .username(userName)
                 .urgent(createCardOrderRequest.isUrgent())
                 .status(OrderStatus.CREATED).build();
 
         log.debug("createCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
-        cardOrder.setUsername(username);
+        cardOrder.setUsername(userName);
         cardOrder = cardOrderRepository.save(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
     }
@@ -175,7 +175,7 @@ public class CardOrderService {
     }
 
     public CardOrder checkCardOrder(Long id) {
-        return cardOrderRepository.findByIdAndUsername(id, username)
+        return cardOrderRepository.findByIdAndUsername(id, userName)
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
     }
 

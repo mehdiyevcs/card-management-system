@@ -46,6 +46,7 @@ dependencies {
     implementation "org.postgresql:postgresql:42.1.1"
     implementation 'org.liquibase:liquibase-core'
     liquibaseRuntime 'org.postgresql:postgresql'
+    //implementation "hu.gyuuu.liquibase-kubernetes:liquibase-kubernetes:${liquibase_kubernetes_version}"
 
     implementation "org.mapstruct:mapstruct:${mapstruct_version}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
