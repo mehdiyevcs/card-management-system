@@ -1,4 +1,4 @@
-package az.company.customer.util;
+package az.company.customer.constant;
 
 /**
  * @author MehdiyevCS on 24.08.21
