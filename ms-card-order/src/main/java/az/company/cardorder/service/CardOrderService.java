@@ -4,21 +4,22 @@ import az.company.cardorder.constant.RabbitMQConstants;
 import az.company.cardorder.domain.enumeration.CardOrderOperationType;
 import az.company.cardorder.domain.enumeration.OrderStatus;
 import az.company.cardorder.dto.CardOrderDto;
-import az.company.cardorder.dto.CardOrderOperationDto;
 import az.company.cardorder.error.exception.InvalidInputException;
 import az.company.cardorder.error.exception.NotFoundException;
 import az.company.cardorder.error.validation.ValidationMessage;
 import az.company.cardorder.mapper.CardOrderMapper;
 import az.company.cardorder.messaging.MessageProducer;
 import az.company.cardorder.messaging.event.CardOrderEvent;
+import az.company.cardorder.model.CreateCardOrderRequest;
 import az.company.cardorder.repository.CardOrderRepository;
 import az.company.cardorder.util.ConvertUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,8 +51,29 @@ public class CardOrderService {
         return cardOrderRepository.findByIdAndUserId(id, USER_ID1).map(cardOrderMapper::toDto);
     }
 
-    @Transactional
-    public CardOrderDto createCardOrder(CardOrderDto cardOrderDto) {
+    public CardOrderDto save(CardOrderDto cardOrderDto) {
+        var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
+        cardOrder.setUserId(USER_ID1);
+        cardOrder = cardOrderRepository.save(cardOrder);
+        return cardOrderMapper.toDto(cardOrder);
+    }
+
+    public CardOrderDto createCardOrder(CreateCardOrderRequest createCardOrderRequest) {
+
+        checkPeriod(createCardOrderRequest.getPeriod());
+
+        var cardOrderDto = CardOrderDto.builder()
+                .cardHolderFullName(createCardOrderRequest.getCardHolderFullName())
+                .cardHolderPin(createCardOrderRequest.getCardHolderPin())
+                .cardType(createCardOrderRequest.getCardType())
+                .codeWord(createCardOrderRequest.getCodeWord())
+                .createdAt(LocalDateTime.now())
+                .period(createCardOrderRequest.getPeriod())
+                .userId(1)
+                .username("")
+                .urgent(createCardOrderRequest.isUrgent())
+                .status(OrderStatus.CREATED).build();
+
         log.debug("createCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
         cardOrder.setUserId(USER_ID1);
@@ -63,17 +85,21 @@ public class CardOrderService {
         var cardOrder = cardOrderRepository.findById(cardOrderDto.getId())
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
         log.debug("EditCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
-        //Submitted order can not be canged
-        if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
+
+        checkStatus(cardOrder.getStatus());
+        checkPeriod(cardOrderDto.getPeriod());
+
+        //Status of the order can not be changed
+        if (cardOrder.getStatus() != cardOrderDto.getStatus()) {
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_STATUS_CHANGE_ATTEMPT);
         }
 
         //Log the operation being carried out
-        var cardOrderOperationDto = createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.EDITION,
                 cardOrder.getStatus(),
-                OrderStatus.EDITED);
-        cardOrderOperationService.save(cardOrderOperationDto);
+                OrderStatus.EDITED,
+                null);
 
         cardOrderDto.setStatus(OrderStatus.EDITED);
         cardOrder = cardOrderRepository.save(cardOrderMapper.toEntity(cardOrderDto));
@@ -85,15 +111,14 @@ public class CardOrderService {
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
         log.debug("The cardOrder {} has been deleted", id);
         //Submitted order can not be canged
-        if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
-        }
+        checkStatus(cardOrder.getStatus());
+
         //Log the operation being carried out
-        var cardOrderOperationDto = createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.DELETION,
                 cardOrder.getStatus(),
-                OrderStatus.DELETED);
-        cardOrderOperationService.save(cardOrderOperationDto);
+                OrderStatus.DELETED,
+                null);
 
         //Delete from the main table
         cardOrder.setStatus(OrderStatus.DELETED);
@@ -105,17 +130,15 @@ public class CardOrderService {
         var cardOrder = cardOrderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
         log.debug("The cardOrder {} has been submitted", id);
-        //Log the operation being carried out
-        if (cardOrder.getStatus() == OrderStatus.SUBMITTED) {
-            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
-        }
+
+        checkStatus(cardOrder.getStatus());
 
         //Log the operation being carried out
-        var cardOrderOperationDto = createOperation(cardOrder.getId(),
+        cardOrderOperationService.createOperation(cardOrder.getId(),
                 CardOrderOperationType.SUBMISSION,
                 cardOrder.getStatus(),
-                OrderStatus.SUBMITTED);
-        cardOrderOperationService.save(cardOrderOperationDto);
+                OrderStatus.SUBMITTED,
+                null);
 
         cardOrder.setStatus(OrderStatus.SUBMITTED);
         cardOrder = cardOrderRepository.save(cardOrder);
@@ -135,25 +158,24 @@ public class CardOrderService {
         messageProducer.publish(RabbitMQConstants.EXCHANGE_TRANSFER,
                 RabbitMQConstants.ROUTING_KEY_CARD_ORDER_SUBMISSION,
                 cardOrderEvent);
-        log.info("Rabbit event has been published...");
 
         return cardOrderMapper.toDto(cardOrder);
     }
 
-    private CardOrderOperationDto createOperation(Long cardOrderId,
-                                                  CardOrderOperationType operationType,
-                                                  OrderStatus oldStatus,
-                                                  OrderStatus newStatus) {
-        log.info("Status of the card order {} changed from {} to {}",
-                cardOrderId, oldStatus, newStatus);
-        return CardOrderOperationDto.builder()
-                .cardOrder(cardOrderId)
-                .createdAt(LocalDateTime.now())
-                .orderOperationType(operationType)
-                .createdBy("Anon")
-                .description(String.format("Status changed from %s to %s",
-                        oldStatus, newStatus))
-                .build();
+    private void checkStatus(OrderStatus orderStatus) {
+        if (orderStatus == OrderStatus.SUBMITTED) {
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_SUBMITTED);
+        }
+
+        if (orderStatus == OrderStatus.COMPLETED) {
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_COMPLETED);
+        }
+    }
+
+    private void checkPeriod(Integer period) {
+        if(!Arrays.asList(12,24,36).contains(period)) {
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_INVALID_PERIOD);
+        }
     }
 
 }

@@ -27,6 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -53,6 +55,10 @@ dependencies {
     implementation "javax.validation:validation-api:${javax_validation_version}"
 
     implementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
+
+    implementation "io.jsonwebtoken:jjwt-api:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-impl:${jwt_version}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jwt_version}"
 }
 
 test {

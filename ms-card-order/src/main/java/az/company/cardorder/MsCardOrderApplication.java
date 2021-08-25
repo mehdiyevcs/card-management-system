@@ -1,6 +1,7 @@
 package az.company.cardorder;
 
 import az.company.cardorder.config.properties.ApplicationProperties;
+import az.company.cardorder.config.properties.TokenProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.net.UnknownHostException;
 
 @EnableSwagger2
 @SpringBootApplication
-@EnableConfigurationProperties({ApplicationProperties.class})
+@EnableConfigurationProperties({ApplicationProperties.class, TokenProperties.class})
 public class MsCardOrderApplication {
 
     private static final Logger log = LoggerFactory.getLogger(MsCardOrderApplication.class);

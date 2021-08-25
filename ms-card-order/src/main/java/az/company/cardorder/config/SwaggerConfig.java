@@ -1,6 +1,7 @@
 package az.company.cardorder.config;
 
 import az.company.cardorder.config.properties.ApplicationProperties;
+import az.company.cardorder.constant.ApplicationConstants;
 import az.company.cardorder.util.SwaggerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.util.StopWatch;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import java.util.Collections;
+import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -41,17 +49,17 @@ public class SwaggerConfig {
                 .paths(regex(properties.getPaths()))
                 .build()
                 .apiInfo(SwaggerUtil.convertToSpringFoxApiInfo(properties.getApiInfo()))
-                .forCodeGeneration(true);
-        //.securityContexts(Collections.singletonList(securityContext()))
-        //.securitySchemes(Collections.singletonList(apiKey()));
+                .forCodeGeneration(true)
+                .securityContexts(Collections.singletonList(securityContext()))
+                .securitySchemes(Collections.singletonList(apiKey()));
 
         watch.stop();
         log.debug("Started Swagger in {} ms", watch.getTotalTimeMillis());
         return docket;
     }
 
-    /*private ApiKey apiKey() {
-        return new ApiKey("JWT", HttpAttribute.AUTHORIZATION, "header");
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", ApplicationConstants.HttpAttribute.AUTHORIZATION, "header");
     }
 
     private SecurityContext securityContext() {
@@ -65,5 +73,5 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return Collections.singletonList(new SecurityReference("JWT", authorizationScopes));
-    }*/
+    }
 }

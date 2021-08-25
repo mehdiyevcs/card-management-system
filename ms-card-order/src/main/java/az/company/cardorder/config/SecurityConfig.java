@@ -1,7 +1,7 @@
-package az.company.customer.config;
+package az.company.cardorder.config;
 
-import az.company.customer.security.TokenCreator;
-import az.company.customer.security.filter.JwtAuthorizationFilter;
+import az.company.cardorder.security.TokenCreator;
+import az.company.cardorder.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/api/auth/login", "/api/ping", "/api/user")
+                .antMatchers("/api/ping")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",

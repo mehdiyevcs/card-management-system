@@ -1,4 +1,4 @@
-package az.company.customer.util;
+package az.company.cardorder.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

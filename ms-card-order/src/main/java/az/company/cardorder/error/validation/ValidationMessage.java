@@ -8,4 +8,7 @@ public interface ValidationMessage {
 
     String CARD_ORDER_NOT_FOUND = "cardOrder.notFound.message";
     String CARD_ORDER_SUBMITTED = "cardOrder.submitted.message";
+    String CARD_ORDER_COMPLETED = "cardOrder.completed.message";
+    String CARD_ORDER_STATUS_CHANGE_ATTEMPT = "cardOrder.statusChangeAttempt.message";
+    String CARD_ORDER_INVALID_PERIOD = "cardOrder.invalidPeriod.message";
 }

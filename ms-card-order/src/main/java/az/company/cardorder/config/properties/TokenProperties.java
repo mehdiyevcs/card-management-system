@@ -1,4 +1,4 @@
-package az.company.customer.config.properties;
+package az.company.cardorder.config.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

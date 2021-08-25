@@ -1,11 +1,11 @@
-package az.company.cardorder.error;
+package az.company.customer.error;
 
-import az.company.cardorder.error.exception.CommonException;
-import az.company.cardorder.error.exception.InvalidInputException;
-import az.company.cardorder.error.exception.NotFoundException;
-import az.company.cardorder.error.model.ErrorResponse;
-import az.company.cardorder.util.MessageSourceUtil;
-import az.company.cardorder.util.WebUtil;
+import az.company.customer.error.exception.CommonException;
+import az.company.customer.error.exception.InvalidInputException;
+import az.company.customer.error.exception.NotFoundException;
+import az.company.customer.error.model.ErrorResponse;
+import az.company.customer.util.MessageSourceUtil;
+import az.company.customer.util.WebUtil;
 import net.logstash.logback.argument.StructuredArguments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

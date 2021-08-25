@@ -39,9 +39,11 @@ public class CustomerController {
         return customerService.getCustomer(id, pin);
     }
 
+    /**
+     * Feature considered for future release
+     */
     @PostMapping("/customer")
-    public CustomerDto createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
-        return customerService.save(createCustomerRequest);
+    public void createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
+        //need to be implemented
     }
-
 }

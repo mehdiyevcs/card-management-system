@@ -1,4 +1,4 @@
-package az.company.cardorder.error.validation;
+package az.company.customer.error.validation;
 
 /**
  * @author MehdiyevCS on 23.08.21

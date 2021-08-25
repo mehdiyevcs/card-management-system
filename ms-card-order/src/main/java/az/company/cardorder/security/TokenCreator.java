@@ -1,8 +1,8 @@
-package az.company.customer.security;
+package az.company.cardorder.security;
 
-import az.company.customer.config.properties.TokenProperties;
-import az.company.customer.security.constants.JwtConstants;
-import az.company.customer.util.FormatterUtil;
+import az.company.cardorder.config.properties.TokenProperties;
+import az.company.cardorder.security.constants.JwtConstants;
+import az.company.cardorder.util.FormatterUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -111,7 +111,6 @@ public class TokenCreator {
         } catch (IllegalArgumentException exception) {
             log.info("Request to parse empty or null JWT : {} failed : {}", authToken, exception.getMessage());
         }
-
         return false;
     }
 }

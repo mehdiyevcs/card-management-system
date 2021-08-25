@@ -1,8 +1,8 @@
-package az.company.customer.security.filter;
+package az.company.cardorder.security.filter;
 
-import az.company.customer.security.TokenCreator;
-import az.company.customer.security.constants.JwtConstants;
-import az.company.customer.util.ApplicationConstants;
+import az.company.cardorder.constant.ApplicationConstants;
+import az.company.cardorder.security.TokenCreator;
+import az.company.cardorder.security.constants.JwtConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String clientIP = Optional
-                .ofNullable(request.getHeader(ApplicationConstants.Attribute.X_FORWARDED_FOR))
+                .ofNullable(request.getHeader(ApplicationConstants.HttpAttribute.X_FORWARDED_FOR))
                 .orElse(request.getRemoteAddr());
         String requestURI = Optional.ofNullable(request)
                 .map(req -> req.getMethod() + " " + req.getRequestURI())
@@ -86,7 +86,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
         var uriList = new String[]{"/v2/api/docs",
                 "/swagger", "/actuator", "/csrf",

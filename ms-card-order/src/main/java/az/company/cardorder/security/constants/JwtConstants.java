@@ -1,4 +1,4 @@
-package az.company.customer.security.constants;
+package az.company.cardorder.security.constants;
 
 /**
  * @author MehdiyevCS on 24.08.21
