@@ -1,7 +1,6 @@
 package az.company.cardorder.util;
 
 import az.company.cardorder.constant.ApplicationConstants;
-import az.company.cardorder.constant.ApplicationConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;

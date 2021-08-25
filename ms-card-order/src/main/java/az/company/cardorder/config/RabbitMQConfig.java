@@ -36,7 +36,6 @@ public class RabbitMQConfig {
                 .with(RabbitMQConstants.ROUTING_KEY_CARD_ORDER_SUBMISSION_RESULT);
     }
 
-
     @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();

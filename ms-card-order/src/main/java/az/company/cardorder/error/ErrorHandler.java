@@ -99,15 +99,16 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        Optional<String> errors = ex.getBindingResult().getFieldErrors().stream().map(x -> {
-            return String.format("'%s' %s", x.getField(), this.messageSourceUtil.getMessage(x.getDefaultMessage()));
-        }).collect(Collectors.collectingAndThen(Collectors.joining("; "), Optional::ofNullable));
+        Optional<String> errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(x -> String.format("'%s' %s", x.getField(),
+                        this.messageSourceUtil.getMessage(x.getDefaultMessage())))
+                .collect(Collectors.collectingAndThen(Collectors.joining("; "), Optional::ofNullable));
         var errLogMessage = String.join(System.lineSeparator(),
                 (CharSequence) errors.orElse(ex.getMessage()), "Request body: " + this.webUtil.getRequestBody());
         this.addErrorLog(status, errLogMessage, "MethodArgumentNotValidException");
         var errorResponse = new ErrorResponse(this.webUtil.getRequestId(),
                 status, errors.orElse(ex.getMessage()));
-        return new ResponseEntity(errorResponse, headers, status);
+        return new ResponseEntity<>(errorResponse, headers, status);
     }
 
     @Override

@@ -7,5 +7,5 @@ public class ValidationPattern {
     private ValidationPattern() {
     }
 
-    public static final String PIN = "^[0-9]{7}$";
+    public static final String PIN = "^[0-9A-Z]{7}$";
 }

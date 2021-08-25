@@ -1,9 +1,9 @@
 package az.company.cardorder.controller;
 
 import az.company.cardorder.dto.CardOrderDto;
+import az.company.cardorder.model.CreateCardOrderRequest;
 import az.company.cardorder.service.CardOrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/card/order")
 @RequiredArgsConstructor
-@Validated
 public class CardOrderController {
 
     private final CardOrderService cardOrderService;
@@ -38,8 +37,8 @@ public class CardOrderController {
     }
 
     @PostMapping("/create")
-    public CardOrderDto createCardOrder(@Valid @RequestBody CardOrderDto cardOrderDto) {
-        return cardOrderService.createCardOrder(cardOrderDto);
+    public CardOrderDto createCardOrder(@Valid @RequestBody CreateCardOrderRequest createCardOrderRequest) {
+        return cardOrderService.createCardOrder(createCardOrderRequest);
     }
 
     @PutMapping("/edit")
