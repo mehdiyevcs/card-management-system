@@ -53,3 +53,6 @@ application:
       jwt:
         base64-secret: QjJCX1BBWU1FTlRfU09MVVRJT05THDSGIGDSUGAISdHOo123dSDSDADIOSUDSIUGFVSDSDsWC2sda41SADSDVDASDV==
         token-validity-in-seconds: 900
+  client:
+    ms-customer:
+      url: http://localhost:8083

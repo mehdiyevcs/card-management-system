@@ -1,5 +1,7 @@
 package az.company.cardorder.service;
 
+import az.company.cardorder.client.MsCustomerClient;
+import az.company.cardorder.client.model.CustomerDto;
 import az.company.cardorder.constant.RabbitMQConstants;
 import az.company.cardorder.domain.CardOrder;
 import az.company.cardorder.domain.enumeration.CardOrderOperationType;
@@ -37,30 +39,31 @@ public class CardOrderService {
     private final CardOrderMapper cardOrderMapper;
     private final CardOrderOperationService cardOrderOperationService;
     private final MessageProducer messageProducer;
+    private final MsCustomerClient msCustomerClient;
 
-    private static final String userName = TokenUtil.getUsernameFromContextHolder()
+    private static final String USERNAME = TokenUtil.getUsernameFromContextHolder()
             .orElse("anonymous");
 
     public List<CardOrderDto> getCardOrders() {
-        return cardOrderRepository.findAllByUsername(userName)
+        return cardOrderRepository.findAllByUsername(USERNAME)
                 .stream()
                 .map(cardOrderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public Optional<CardOrderDto> getCardOrder(Long id) {
-        return cardOrderRepository.findByIdAndUsername(id, userName).map(cardOrderMapper::toDto);
+        return cardOrderRepository.findByIdAndUsername(id, USERNAME).map(cardOrderMapper::toDto);
     }
 
     public CardOrderDto save(CardOrderDto cardOrderDto) {
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
-        cardOrder.setUsername(userName);
+        cardOrder.setUsername(USERNAME);
         cardOrder = cardOrderRepository.save(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
     }
 
     public CardOrderDto createCardOrder(CreateCardOrderRequest createCardOrderRequest) {
-
+        checkCustomerByPin(createCardOrderRequest.getCardHolderPin());
         checkPeriod(createCardOrderRequest.getPeriod());
 
         var cardOrderDto = CardOrderDto.builder()
@@ -70,13 +73,13 @@ public class CardOrderService {
                 .codeWord(createCardOrderRequest.getCodeWord())
                 .createdAt(LocalDateTime.now())
                 .period(createCardOrderRequest.getPeriod())
-                .username(userName)
+                .username(USERNAME)
                 .urgent(createCardOrderRequest.isUrgent())
                 .status(OrderStatus.CREATED).build();
 
         log.debug("createCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
         var cardOrder = cardOrderMapper.toEntity(cardOrderDto);
-        cardOrder.setUsername(userName);
+        cardOrder.setUsername(USERNAME);
         cardOrder = cardOrderRepository.save(cardOrder);
         return cardOrderMapper.toDto(cardOrder);
     }
@@ -175,8 +178,14 @@ public class CardOrderService {
     }
 
     public CardOrder checkCardOrder(Long id) {
-        return cardOrderRepository.findByIdAndUsername(id, userName)
+        return cardOrderRepository.findByIdAndUsername(id, USERNAME)
                 .orElseThrow(() -> new NotFoundException(ValidationMessage.CARD_ORDER_NOT_FOUND));
+    }
+
+    public void checkCustomerByPin(String pin) {
+        msCustomerClient.getCustomer(null, pin)
+                .orElseThrow(() -> InvalidInputException.of("No such customer for the user, please specify right PIN"));
+
     }
 
 }

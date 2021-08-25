@@ -1,5 +1,6 @@
 package az.company.cardorder;
 
+import az.company.cardorder.client.MsCustomerClient;
 import az.company.cardorder.config.properties.ApplicationProperties;
 import az.company.cardorder.config.properties.TokenProperties;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.core.env.Environment;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -17,6 +19,7 @@ import java.net.UnknownHostException;
 @EnableSwagger2
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class, TokenProperties.class})
+@EnableFeignClients(clients = {MsCustomerClient.class})
 public class MsCardOrderApplication {
 
     private static final Logger log = LoggerFactory.getLogger(MsCardOrderApplication.class);
