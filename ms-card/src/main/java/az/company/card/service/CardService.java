@@ -22,10 +22,10 @@ public class CardService {
     private final CardMapper cardMapper;
 
     public Optional<CardDto> getCard(Long id, Long orderId) {
-        if(Objects.nonNull(id))
+        if (Objects.nonNull(id))
             return cardRepository.findById(id).map(cardMapper::toDto);
 
-        if(Objects.nonNull(orderId))
+        if (Objects.nonNull(orderId))
             return cardRepository.findByOrderId(orderId).map(cardMapper::toDto);
 
         throw InvalidInputException.of(ValidationMessage.CARD_PARAMETER_MISSING);

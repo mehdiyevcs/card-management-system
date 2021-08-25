@@ -23,7 +23,7 @@ public class ProcessingService {
     private final CardService cardService;
 
     public void processCardOrderEvent(CardOrderEvent cardOrderEvent) {
-        try{
+        try {
             var cardDto = CardDto.builder()
                     .orderId(cardOrderEvent.getId())
                     .customerId(12345L)//In future will be received by calling to ms-customer getCustomerByPin
@@ -40,7 +40,7 @@ public class ProcessingService {
             messageProducer.publish(RabbitMQConstants.EXCHANGE_TRANSFER,
                     RabbitMQConstants.ROUTING_KEY_CARD_ORDER_SUBMISSION_RESULT,
                     cardOrderResultEvent);
-        } catch(Exception e){
+        } catch (Exception e) {
             var cardOrderResultEvent = CardOrderResultEvent.builder()
                     .id(cardOrderEvent.getId())
                     .orderStatus(OrderStatus.FAILED)
