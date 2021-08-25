@@ -32,9 +32,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_at" type="datetime"/>
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
             <column name="username" type="varchar2(50)">
                 <constraints nullable="false"/>
             </column>

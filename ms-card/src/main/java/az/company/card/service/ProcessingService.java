@@ -25,12 +25,13 @@ public class ProcessingService {
     public void processCardOrderEvent(CardOrderEvent cardOrderEvent) {
         CardDto cardDto = CardDto.builder()
                 .orderId(cardOrderEvent.getId())
-                .customerId(cardOrderEvent.getUserId())
+                .customerId(12345L)
                 .createdAt(LocalDateTime.now())
                 .cardType(cardOrderEvent.getCardType())
                 .cardNumber(CardNumberGenerator.generateMasterCardNumber())
                 .accountNumber(CardNumberGenerator.generateMasterCardNumber()).build();
         cardService.save(cardDto);
+
         CardOrderResultEvent cardOrderResultEvent = CardOrderResultEvent.builder()
                 .id(cardOrderEvent.getId())
                 .orderStatus(OrderStatus.COMPLETED)

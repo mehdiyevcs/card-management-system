@@ -61,9 +61,6 @@ public class CardOrder {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
     @Column(name = "username", nullable = false)
     private String username;
 }

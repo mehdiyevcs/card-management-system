@@ -59,11 +59,9 @@ public class TokenCreator {
     }
 
     public String generateToken(String username,
-                                List<String> roleList,
-                                Long userId) {
+                                List<String> roleList) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", roleList);
-        claims.put("user_id", userId);
         return doGenerateToken(claims, username);
     }
 

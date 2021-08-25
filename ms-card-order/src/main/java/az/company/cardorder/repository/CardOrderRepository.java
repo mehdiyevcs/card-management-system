@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 @Repository
 public interface CardOrderRepository extends JpaRepository<CardOrder, Long> {
-    List<CardOrder> findAllByUserId(Long userId);
+    List<CardOrder> findAllByUsername(String username);
 
-    Optional<CardOrder> findByIdAndUserId(Long id, Long userId);
+    Optional<CardOrder> findByIdAndUsername(Long id, String username);
 }
