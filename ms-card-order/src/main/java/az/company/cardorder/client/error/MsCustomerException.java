@@ -12,7 +12,7 @@ import java.util.Map;
  * @author MehdiyevCS on 25.08.21
  */
 @Getter
-public class MsCustomerException extends RuntimeException{
+public class MsCustomerException extends RuntimeException {
     private final MsCustomerErrorResponse errorResponse;
     private final Map<String, Collection<String>> headers;
 
