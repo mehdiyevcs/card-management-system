@@ -62,6 +62,7 @@ Request:
 ``
 curl -X POST "http://localhost:8081/api/auth/login" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"password\": \"mehdiyevcs\",  \"username\": \"mehdiyevcs\"}"
 ``
+
 Response:
 ``
 {
@@ -79,6 +80,7 @@ Request:
 ``
 curl -X POST "http://localhost:8080/api/card/order/create" -H  "accept: */*" -H  "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6Im1laGRpeWV2Y3MiLCJhdWQiOiJhcGktY2xpZW50cyIsImlzcyI6IkNvbXBhbnkiLCJleHAiOjE2Mjk5MTgyNTh9.0q_jw_GG8yR_3kfYnP9inRB2Xs86XApiuSgSILkYWY6gh4LMhuQR3AFjbfQRfBHki848WY5IydQOx5m8KFtttw" -H  "Content-Type: application/json" -d "{  \"cardHolderFullName\": \"Jalal Mehdiyev\",  \"cardHolderPin\": \"TEST112\",  \"cardType\": \"MC\",  \"codeWord\": \"string\",  \"period\": 12,  \"urgent\": true}"
 ``
+
 Response:
 ``
 {
@@ -101,6 +103,7 @@ Request
 ``
 curl -X PUT "http://localhost:8080/api/card/order/6/submit" -H  "accept: */*" -H  "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6Im1laGRpeWV2Y3MiLCJhdWQiOiJhcGktY2xpZW50cyIsImlzcyI6IkNvbXBhbnkiLCJleHAiOjE2Mjk5MTgyNTh9.0q_jw_GG8yR_3kfYnP9inRB2Xs86XApiuSgSILkYWY6gh4LMhuQR3AFjbfQRfBHki848WY5IydQOx5m8KFtttw"
 ``
+
 Response
 ``
 {
@@ -123,6 +126,7 @@ Request
 ``
 curl -X GET "http://localhost:8080/api/card/order/6" -H  "accept: */*" -H  "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6Im1laGRpeWV2Y3MiLCJhdWQiOiJhcGktY2xpZW50cyIsImlzcyI6IkNvbXBhbnkiLCJleHAiOjE2Mjk5MTgyNTh9.0q_jw_GG8yR_3kfYnP9inRB2Xs86XApiuSgSILkYWY6gh4LMhuQR3AFjbfQRfBHki848WY5IydQOx5m8KFtttw"
 ``
+
 Response
 ``
 {
@@ -147,6 +151,7 @@ Request
 ``
 curl -X GET "http://localhost:8082/api/card?orderId=6" -H  "accept: */*"
 ``
+
 Response
 ``
 {
