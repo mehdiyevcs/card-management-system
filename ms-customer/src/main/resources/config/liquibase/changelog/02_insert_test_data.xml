@@ -7,14 +7,26 @@
     <changeSet id="02_insert_test_data.xml" author="MehdiyevCS">
         <insert tableName="customer">
             <column name="pin" value="TEST111"/>
-            <column name="full_name" value="test user"/>
-            <column name="user_id" value="1"/>
+            <column name="full_name" value="test1 mehdiyevcs"/>
+            <column name="username" value="mehdiyevcs"/>
         </insert>
 
         <insert tableName="customer">
             <column name="pin" value="TEST112"/>
-            <column name="full_name" value="test user1"/>
-            <column name="user_id" value="2"/>
+            <column name="full_name" value="test mehdiyevcs"/>
+            <column name="username" value="mehdiyevcs"/>
+        </insert>
+
+        <insert tableName="customer">
+            <column name="pin" value="TEST113"/>
+            <column name="full_name" value="test company"/>
+            <column name="username" value="company"/>
+        </insert>
+
+        <insert tableName="customer">
+            <column name="pin" value="TEST114"/>
+            <column name="full_name" value="test1 company"/>
+            <column name="username" value="company"/>
         </insert>
     </changeSet>
 

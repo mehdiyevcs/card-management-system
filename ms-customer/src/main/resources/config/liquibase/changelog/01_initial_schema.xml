@@ -16,7 +16,7 @@
             <column name="full_name" type="varchar2(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="bigint">
+            <column name="username" type="varchar2(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

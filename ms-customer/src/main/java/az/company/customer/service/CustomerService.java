@@ -55,7 +55,7 @@ public class CustomerService {
                 .build();
 
         var customer = customerMapper.toEntity(customerDto);
-        customer.setUserId(12345L);//In future take from securityContextHolder
+        customer.setUsername("anon");//In future take from securityContextHolder
         customer = customerRepository.save(customer);
         return customerMapper.toDto(customer);
     }
