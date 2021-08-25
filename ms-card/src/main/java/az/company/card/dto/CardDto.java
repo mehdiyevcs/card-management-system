@@ -1,6 +1,6 @@
 package az.company.card.dto;
 
-import az.company.card.domain.enumeration.CardType;
+import az.company.card.domain.CardType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package az.company.card.domain.enumeration;
+package az.company.card.domain;
 
 /**
  * @author MehdiyevCS on 22.08.21

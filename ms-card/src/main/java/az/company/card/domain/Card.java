@@ -1,6 +1,5 @@
 package az.company.card.domain;
 
-import az.company.card.domain.enumeration.CardType;
 import lombok.Data;
 
 import javax.persistence.Column;
