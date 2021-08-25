@@ -10,15 +10,14 @@ After build necessary infra for microservices,
 To run the microservices, use following commands
 
 ```
-$ ./gradlew :CARD-STREAM:bootRun
+$ ./gradlew :MS-AUTH:bootRun
 
-$ ./gradlew :MS-ACCOUNT:bootRun
+$ ./gradlew :MS-CARD-ORDER:bootRun
 
 $ ./gradlew :MS-CARD:bootRun
 
 $ ./gradlew :MS-CUSTOMER:bootRun
 
-$ ./gradlew :MS-EVENT:bootRun
 ```
 
 
