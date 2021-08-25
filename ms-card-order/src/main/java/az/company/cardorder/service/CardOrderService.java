@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +60,8 @@ public class CardOrderService {
 
     public CardOrderDto createCardOrder(CreateCardOrderRequest createCardOrderRequest) {
 
+        checkPeriod(createCardOrderRequest.getPeriod());
+
         var cardOrderDto = CardOrderDto.builder()
                 .cardHolderFullName(createCardOrderRequest.getCardHolderFullName())
                 .cardHolderPin(createCardOrderRequest.getCardHolderPin())
@@ -83,6 +87,7 @@ public class CardOrderService {
         log.debug("EditCardOrder request: {}", ConvertUtil.convertObjectToJsonString(cardOrderDto));
 
         checkStatus(cardOrder.getStatus());
+        checkPeriod(cardOrderDto.getPeriod());
 
         //Status of the order can not be changed
         if (cardOrder.getStatus() != cardOrderDto.getStatus()) {
@@ -164,6 +169,12 @@ public class CardOrderService {
 
         if (orderStatus == OrderStatus.COMPLETED) {
             throw InvalidInputException.of(ValidationMessage.CARD_ORDER_COMPLETED);
+        }
+    }
+
+    private void checkPeriod(Integer period) {
+        if(!Arrays.asList(12,24,36).contains(period)) {
+            throw InvalidInputException.of(ValidationMessage.CARD_ORDER_INVALID_PERIOD);
         }
     }
 

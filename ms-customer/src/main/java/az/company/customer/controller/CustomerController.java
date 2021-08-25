@@ -43,7 +43,7 @@ public class CustomerController {
      * Feature considered for future release
      */
     @PostMapping("/customer")
-    public CustomerDto createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
+    public void createCustomer(@Valid @RequestBody CreateCustomerRequest createCustomerRequest) {
         //need to be implemented
     }
 }
