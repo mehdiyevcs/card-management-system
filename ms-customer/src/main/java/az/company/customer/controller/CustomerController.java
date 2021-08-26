@@ -1,8 +1,11 @@
 package az.company.customer.controller;
 
 import az.company.customer.dto.CustomerDto;
+import az.company.customer.error.model.ErrorResponse;
 import az.company.customer.model.CreateCustomerRequest;
 import az.company.customer.service.CustomerService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,14 @@ import java.util.Optional;
 /**
  * @author MehdiyevCS on 24.08.21
  */
+@ApiResponses(value = {
+        @ApiResponse(code = 400, message = "Bad request",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 500, message = "Internal Server Error",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 404, message = "Not Found",
+                response = ErrorResponse.class),
+})
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
