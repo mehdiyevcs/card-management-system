@@ -1,8 +1,11 @@
 package az.company.cardorder.controller;
 
 import az.company.cardorder.dto.CardOrderDto;
+import az.company.cardorder.error.model.ErrorResponse;
 import az.company.cardorder.model.CreateCardOrderRequest;
 import az.company.cardorder.service.CardOrderService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,18 @@ import java.util.Optional;
 /**
  * @author MehdiyevCS on 22.08.21
  */
+@ApiResponses(value = {
+        @ApiResponse(code = 400, message = "Bad request",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 500, message = "Internal Server Error",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 401, message = "Unauthorized",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 403, message = "Forbidden",
+                response = ErrorResponse.class),
+        @ApiResponse(code = 404, message = "Not Found",
+                response = ErrorResponse.class),
+})
 @RestController
 @RequestMapping("/api/card/order")
 @RequiredArgsConstructor
